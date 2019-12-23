@@ -8,12 +8,14 @@ import DebugConfig from '../Config/DebugConfig'
 import { StartupTypes } from '../Redux/StartupRedux'
 import { GithubTypes } from '../Redux/GithubRedux'
 import { TodayTypes } from '../Redux/TodayRedux'
+import { LoginTypes } from '../Redux/LoginRedux'
 
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
-import { getToday } from './TodaySagas'
+import { getToday, getBusinessToday, getTechToday, getVideoToday } from './TodaySagas'
+import { login } from './LoginSagas'
 
 /* ------------- API ------------- */
 
@@ -30,6 +32,10 @@ export default function * root () {
 
     // some sagas receive extra parameters in addition to an action
     takeLatest(GithubTypes.USER_REQUEST, getUserAvatar, api),
-    takeLatest(TodayTypes.GET_TOP_REQUEST, getToday, api)
+    takeLatest(TodayTypes.GET_TOP_REQUEST, getToday, api),
+    takeLatest(TodayTypes.GET_BUSINESS_REQUEST, getBusinessToday, api),
+    takeLatest(TodayTypes.GET_TECHNO_REQUEST, getTechToday, api),
+    takeLatest(TodayTypes.GET_VIDEO_REQUEST, getVideoToday, api),
+    takeLatest(LoginTypes.LOGIN_REQUEST, login)
   ])
 }

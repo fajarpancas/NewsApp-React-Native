@@ -1,17 +1,16 @@
-import React, { Component } from 'react'
-import { ScrollView, Text, KeyboardAvoidingView, FlatList, View, Image } from 'react-native'
-import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
-// Styles
+import React, { Component } from 'react';
+import { Text, View, Image, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Images } from '../Themes'
 import styles from './Styles/DetailScreenStyle'
 
 class DetailScreen extends Component {
   constructor(props){
     super(props)
     this.state = {
+      detail: [],
       data: [
         {
           id: 1,
@@ -39,6 +38,12 @@ class DetailScreen extends Component {
         },
       ]
     }
+  }
+  
+  componentDidMount() {
+    this.setState({
+      detail : this.props.navigation.state.params.dataDetail
+    })
   }
 
   renderItem = ({item}) => {
@@ -87,9 +92,13 @@ class DetailScreen extends Component {
   }
 
   render () {
-    const { data } = this.state
+    const { data, detail } = this.state
+    // alert(JSON.stringify(detail))
+
     return (
       <ScrollView> 
+        <Text style={styles.titleDetail}>{this.props.navigation.state.params.dataDetail.title}</Text>
+
         <View style={styles.wrapper}>
           <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
@@ -111,14 +120,39 @@ class DetailScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-  }
-}
+const HeaderDetailContainer = createStackNavigator(
+  {
+    defaulthome: DetailScreen
+  },
+  {
+    /* The header config from HomeScreen is now here */
+    defaultNavigationOptions: {
+      headerRight: () => <Icon.Button
+                            name="search"
+                            backgroundColor="white"
+                            color="white"
+                            padding={0}
+                            marginRight={10}
+                            size={22}>
+                        </Icon.Button>,
+      headerLeft: () => <Icon.Button
+                            name="arrow-left"
+                            backgroundColor="white"
+                            color="grey"
+                            padding={0}
+                            marginLeft={10}
+                            size={22}>
+                        </Icon.Button>,
+      headerTitle: () => <Text style={styles.TextDetail}>Top News</Text>,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textAlign: 'center'
+      },
+    },
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(DetailScreen)
+export default createAppContainer(HeaderDetailContainer);

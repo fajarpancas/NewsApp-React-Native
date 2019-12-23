@@ -1,64 +1,52 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View, FlatList } from 'react-native'
+import { ScrollView, Text, Image, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
 import TodayData from '../Redux/TodayRedux'
 import PropTypes from 'prop-types'
+import Moment from 'moment'
 
 // Styles
 import styles from './Styles/TodayScreenStyle'
 import Icon from 'react-native-vector-icons/FontAwesome';
+// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 class TodayScreen extends React.Component {
   static propTypes = {
     dispatch: PropTypes.func,
-    getTopNews: PropTypes.func
+    getTopNews: PropTypes.func,
+    getBusiness: PropTypes.func,
+    getTech: PropTypes.func,
+    getVideo: PropTypes.func
   }
   
   constructor(props){    
     super(props)
     this.state = {
-      data: [
-        {
-          id: 1,
-          title: 'Trumps says new U.S law on Hong Kong doesn’t help China trade talk',
-          image: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png',
-          upload: 2,
-          view: 110,
-          share: 131
-        },
-        {
-          id: 2,
-          title: 'Elon Musk’s jury to be queried on opinions of billionaires',
-          image: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-          upload: 2,
-          view: 120,
-          share: 111
-        },
-        {
-          id: 3,
-          title: 'China’s Xiaomi launches online lending service in India',
-          image: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-          upload: 2,
-          view: 125,
-          share: 112
-        },
-      ]
+      data: []
     }
   }
 
   componentDidMount() {
-    const {getTopNews} = this.props
+    const { getTopNews, getBusiness, getTech, getVideo } = this.props
     getTopNews()
+    getBusiness(),
+    getTech()
+    getVideo()
+  }
 
+  detail = (item) =>{
+    this.props.navigation.navigate('DetailScreen', {
+      dataDetail : item
+    })
   }
 
   renderVideo = ({item}) =>{
     return(
       <View style={styles.containerVideo}>
-        <Image source={{uri: item.image}} style={styles.videoImage} />
+        <Image source={{uri: item.urlToImage}} style={styles.videoImage} />
         <Text style={styles.titleVideo}>{item.title}</Text>
       </View>
     )
@@ -67,9 +55,9 @@ class TodayScreen extends React.Component {
   renderItem = ({item}) => {
     // alert(JSON.stringify(item))
     return (
-      <View>
+      <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
-              <View style={styles.boxTitleTopNews}>
+        <View style={styles.boxTitleTopNews}>
                 <Text style={styles.title}>{item.title}</Text>
               </View>
               <View style={styles.boxImageTopNews}>
@@ -79,16 +67,16 @@ class TodayScreen extends React.Component {
           </View>
           <View style={styles.container2}>
               <View style={styles.uploaded}>
-                <Text style={styles.timeText}>{item.publishedAt} hours ago</Text>
+                <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
               </View>
               <View style={styles.view}>
               <Icon.Button
                   name="eye"
                   backgroundColor="white"
                   color="grey"
-                  size={9}
                   padding={0}
                   margin={5}
+                  size={9}
                   onPress={this.loginWithFacebook}>
                     <Text></Text>
               </Icon.Button>
@@ -106,28 +94,28 @@ class TodayScreen extends React.Component {
               </Icon.Button>      
               </View>
           </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   render () {
-    const { getTopNewsData, newList } = this.props
+    const { getTopNewsData, newList, getBusiness, businessList, getTech, techList, getVideoData, videoList  } = this.props
     const { fetching, payload, error } = getTopNewsData
 
-    if (fetching === true) {
+    if (getTopNewsData.fetching === true) {
       return(
-        <View><Text>Loading</Text></View>
+        <ActivityIndicator size="large" style={{marginTop: 20}}></ActivityIndicator>
       )
       // return <RenderLoading />
     }
 
-    if (fetching === false && error === true){
+    if (getTopNewsData.fetching === false && getTopNewsData.error === true){
       return(
         <View><Text>Failure Get Data</Text></View>
       )
     }
 
-    if(fetching === false && payload !== undefined){
+    // if(getTopNewsData.fetching === false && getTopNewsData.payload !== undefined){
     return (
       <ScrollView>
           <View style={styles.wrapper}>
@@ -143,7 +131,12 @@ class TodayScreen extends React.Component {
           <FlatList
             data={newList}
             renderItem={this.renderItem}
-            numColumns={2}
+            ListEmptyComponent={() => {
+              return (
+                <View><Text>Empty Data</Text></View>
+              )
+            }}
+            initialNumToRender={3}
             // keyExtractor={(item, index) => index.toString()}
             // keyExtractor={item => item.id}
           />
@@ -159,13 +152,18 @@ class TodayScreen extends React.Component {
               </View>
           </View>
 
-          {/* <FlatList
+          <FlatList
           horizontal
-            data={data}
+            data={videoList}
             renderItem={this.renderVideo}
             showsHorizontalScrollIndicator={false}
+            ListEmptyComponent={() => {
+              return (
+                <View><Text>Empty Data</Text></View>
+              )
+            }}
             // keyExtractor={item => item.id}
-          /> */}
+          />
 
           <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
@@ -176,11 +174,16 @@ class TodayScreen extends React.Component {
               </View>
           </View>
 
-          {/* <FlatList
-            data={data}
+          <FlatList
+            data={businessList}
             renderItem={this.renderItem}
+            ListEmptyComponent={() => {
+              return (
+                <View><Text>Empty Data</Text></View>
+              )
+            }}
             // keyExtractor={item => item.id}
-          /> */}
+          />
 
           <View style={styles.contentAdvert}></View>
 
@@ -193,29 +196,43 @@ class TodayScreen extends React.Component {
               </View>
           </View>
 
-          {/* <FlatList
-            data={data}
+          <FlatList
+            data={techList}
             renderItem={this.renderItem}
+            ListEmptyComponent={() => {
+              return (
+                <View><Text>Empty Data</Text></View>
+              )
+            }}
             // keyExtractor={item => item.id}
-          /> */}
-        </View>  
+          />
+          </View>  
       </ScrollView>
-    )
+      )
     }
-  }
+  // }
 }
 
 const mapStateToProps = (state) => {
-  // alert(JSON.stringify(state.news.newsTopList.articles))
+  // alert(JSON.stringify(state.news.videoList.articles.length))
   return {
     getTopNewsData: state.news.getTopNews,
-    newList: state.news.newsTopList.articles
+    newList: state.news.newsTopList.articles,
+    getBusinessData: state.news.getBusiness,
+    businessList: state.news.businessList.articles,
+    getTechno: state.news.getTech,
+    techList: state.news.TechList.articles,
+    getVideoData: state.news.getVideo,
+    videoList: state.news.videoList.articles
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getTopNews: () => dispatch(TodayData.getTopRequest())
+    getTopNews: () => dispatch(TodayData.getTopRequest()),
+    getBusiness: () => dispatch(TodayData.getBusinessRequest()),
+    getTech: () => dispatch(TodayData.getTechnoRequest()),
+    getVideo: () => dispatch(TodayData.getVideoRequest())
   }
 }
 

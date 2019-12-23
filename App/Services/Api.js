@@ -37,7 +37,10 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
-  const gettoday = () => api.get('top-headlines?sources=techcrunch&apiKey=e457e5324b9449d4b60702270195720e')
+  const getToday = () => api.get('top-headlines?sources=techcrunch&apiKey=e457e5324b9449d4b60702270195720e')
+  const getBusinessToday = () => api.get('top-headlines?country=us&category=business&apiKey=e457e5324b9449d4b60702270195720e')
+  const getTechToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
+  const getVideoToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
 
   // ------
   // STEP 3
@@ -56,7 +59,10 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
     getRoot,
     getRate,
     getUser,
-    gettoday
+    getToday,
+    getBusinessToday,
+    getTechToday,
+    getVideoToday
   }
 }
 

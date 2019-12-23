@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "596379566025",
+    "firebase_url": "https://newsapp-af210.firebaseio.com",
+    "project_id": "newsapp-af210",
+    "storage_bucket": "newsapp-af210.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596379566025:android:b39d39391bf30554057218",
+        "android_client_info": {
+          "package_name": "com.vsignite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "596379566025-9jrqp03oid2hqsjaga52thss6mdqdl8v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoC7d6Y-GheVuZnS9Xw-8zQqeIT18T5Gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596379566025-9jrqp03oid2hqsjaga52thss6mdqdl8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

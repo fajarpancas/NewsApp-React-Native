@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import TodayScreen from './TodayScreen'
@@ -7,6 +7,10 @@ import RecommendedScreen from './RecommendedScreen';
 import TrendingScreen from './TrendingScreen';
 import ShopScreen from './ShopScreen';
 import TodayData from '../Redux/TodayRedux'
+import { createStackNavigator } from 'react-navigation-stack';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import { Images } from '../Themes'
+import styles from './Styles/BerandaScreenStyle'
 
 
 const TabNavigator = createMaterialTopTabNavigator({
@@ -41,19 +45,38 @@ tabBarOptions: {
 }
 });
 
+const HeaderContainer = createStackNavigator({
+    defaulthome: TabNavigator
+  },
+  {
+    /* The header config from HomeScreen is now here */
+    defaultNavigationOptions: {
+      headerRight: () => <Icon.Button
+                            name="search"
+                            backgroundColor="white"
+                            color="grey"
+                            padding={0}
+                            marginRight={10}
+                            size={22}>
+                        </Icon.Button>,
+      headerLeft: () => <Icon.Button
+                            name="rocket"
+                            backgroundColor="white"
+                            color="grey"
+                            padding={0}
+                            marginLeft={10}
+                            size={22}>
+                        </Icon.Button>,
+      headerTitle: () => <Image source={Images.logo_blue} style={styles.logoBlue} resizeMode='stretch' />,
+      headerStyle: {
+        backgroundColor: 'white',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        textAlign: 'center'
+      },
+    },
+})
 
-TabNavigator.navigationOptions = {
-
-  header : ( /* Your custom header */
-    <View
-      style={{
-        height: 80,
-        marginTop: 20 /* only for IOS to give StatusBar Space */
-      }}
-    >
-      <Text>This is CustomHeader</Text>
-    </View>
-  )
-};
-
-export default createAppContainer(TabNavigator);
+export default createAppContainer(HeaderContainer, TabNavigator);

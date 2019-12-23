@@ -88,5 +88,17 @@ export default StyleSheet.create({
   },
   timeText:{
     color: Colors.buttonLog
+  },
+  TextDetail: {
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    fontSize: Fonts.size.input,
+    fontWeight: 'bold'
+  },
+  titleDetail:{
+    fontSize: Fonts.size.h8,
+    margin: 15,
+    fontWeight: 'bold',
+    color: 'black'
   }
 })

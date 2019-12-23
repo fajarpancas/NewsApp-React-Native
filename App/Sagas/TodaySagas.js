@@ -19,7 +19,7 @@ export function * getToday (api) {
   // get current data from Store
   // const currentData = yield select(TodaySelectors.getData)
   // make the call to the api
-  const response = yield call(api.gettoday)
+  const response = yield call(api.getToday)
 
   // success?
   console.tron.log("tes : ",response)
@@ -29,5 +29,59 @@ export function * getToday (api) {
     yield put(TodayActions.getTopSuccess(response.data))
   } else {
     yield put(TodayActions.getTopFailure())
+  }
+}
+
+export function * getBusinessToday (api) {
+  // const { data } = action
+  // get current data from Store
+  // const currentData = yield select(TodaySelectors.getData)
+  // make the call to the api
+  const response = yield call(api.getBusinessToday)
+
+  // success?
+  console.tron.log("tes : ",response)
+  if (response.ok) {
+    // You might need to change the response here - do this with a 'transform',
+    // located in ../Transforms/. Otherwise, just pass the data back from the api.
+    yield put(TodayActions.getBusinessSuccess(response.data))
+  } else {
+    yield put(TodayActions.getBusinessFailure())
+  }
+}
+
+export function * getTechToday (api) {
+  // const { data } = action
+  // get current data from Store
+  // const currentData = yield select(TodaySelectors.getData)
+  // make the call to the api
+  const response = yield call(api.getTechToday)
+
+  // success?
+  console.tron.log("tes : ",response)
+  if (response.ok) {
+    // You might need to change the response here - do this with a 'transform',
+    // located in ../Transforms/. Otherwise, just pass the data back from the api.
+    yield put(TodayActions.getTechnoSuccess(response.data))
+  } else {
+    yield put(TodayActions.getTechnoFailure())
+  }
+}
+
+export function * getVideoToday (api) {
+  // const { data } = action
+  // get current data from Store
+  // const currentData = yield select(TodaySelectors.getData)
+  // make the call to the api
+  const response = yield call(api.getVideoToday)
+
+  // success?
+  console.tron.log("tes : ",response)
+  if (response.ok) {
+    // You might need to change the response here - do this with a 'transform',
+    // located in ../Transforms/. Otherwise, just pass the data back from the api.
+    yield put(TodayActions.getVideoSuccess(response.data))
+  } else {
+    yield put(TodayActions.getVideoFailure())
   }
 }
