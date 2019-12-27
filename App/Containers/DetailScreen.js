@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View, Image, ScrollView, FlatList, ActivityIndicator } from 'react-native';
+import { Text, View, Image, ScrollView, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Images } from '../Themes'
 import styles from './Styles/DetailScreenStyle'
+import Moment from 'moment'
+import BerandaScreen from './BerandaScreen';
 
 class DetailScreen extends Component {
   constructor(props){
@@ -41,64 +43,72 @@ class DetailScreen extends Component {
   }
   
   componentDidMount() {
-    this.setState({
-      detail : this.props.navigation.state.params.dataDetail
-    })
+    // this.setState({
+    //   detail : this.props.navigation.state.params.dataDetail
+    // })
   }
 
   renderItem = ({item}) => {
     return (
       <View>
         <View style={styles.container}>
-              <View style={styles.boxTitleTopNews}>
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
-              <View style={styles.boxImageTopNews}>
-                <Image source={{uri: item.image}} style={styles.boxImageTopNews} />
-                {/* <Text style={styles.image}>{item.image}</Text> */}
-              </View>
+            <View style={styles.boxTitleTopNews}>
+              <Text style={styles.title}>{item.title}</Text>
+            </View>
+            <View style={styles.boxImageTopNews}>
+              <Image source={{uri: item.image}} style={styles.boxImageTopNews} />
+              {/* <Text style={styles.image}>{item.image}</Text> */}
+            </View>
           </View>
           <View style={styles.container2}>
-              <View style={styles.uploaded}>
-                <Text style={styles.timeText}>{item.upload} hours ago</Text>
-              </View>
-              <View style={styles.view}>
-              <Icon.Button
-                  name="eye"
-                  backgroundColor="white"
-                  color="grey"
-                  size={9}
-                  padding={0}
-                  margin={5}
-                  onPress={this.loginWithFacebook}>
-                    <Text>{item.view}</Text>
-              </Icon.Button>
-              </View>
-              <View style={styles.shared}>
-              <Icon.Button
-                  name="share"
-                  backgroundColor="white"
-                  color="grey"
-                  padding={0}
-                  margin={5}
-                  size={9}
-                  onPress={this.loginWithFacebook}>
-                    <Text>{item.share}</Text>
-              </Icon.Button>      
-              </View>
+            <View style={styles.uploaded}>
+              <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
+            </View>
+            <View style={styles.view}>
+              <Image source={Images.eye} style={styles.shareIcon} />
+              <Text style={styles.total}>125k</Text>
+            </View>
+            <View style={styles.shared}>
+              <Image source={Images.share} style={styles.shareIcon} />
+              <Text style={styles.total}>125k</Text>
+            </View>      
           </View>
       </View>
     )
   }
 
   render () {
-    const { data, detail } = this.state
-    // alert(JSON.stringify(detail))
+    const { data} = this.state
 
     return (
       <ScrollView> 
         <Text style={styles.titleDetail}>{this.props.navigation.state.params.dataDetail.title}</Text>
+        <View style={styles.container2}>
+            <View style={styles.uploaded}>
+              <Text style={styles.timeText}>{Moment(this.props.navigation.state.params.dataDetail.publishedAt).format('MMMM DD, YYYY')}</Text>
+            </View>
+            <View style={styles.view}>
+              <Image source={Images.eye} style={styles.shareIcon} />
+              <Text style={styles.total}>125k</Text>
+            </View>
+            <View style={styles.shared}>
+              <Image source={Images.share} style={styles.shareIcon} />
+              <Text style={styles.total}>125k</Text>
+            </View>
+        </View>
 
+        <View style={{flex: 1, flexDirection: 'row'}}>
+          <Text style={styles.textShare}>Share to : </Text>
+          <Image source={Images.facebook} style={styles.imageSosial} />
+          <Image source={Images.twitter} style={styles.imageSosial} />
+          <Image source={Images.whatsapp} style={styles.imageSosial} />
+          <Image source={Images.email} style={styles.imageSosial} />
+        </View>
+
+        {/* content */}
+        <Text style={styles.contentDetail}>{this.props.navigation.state.params.dataDetail.content}</Text>
+        <Image source={{uri: this.props.navigation.state.params.dataDetail.urlToImage}} style={styles.detailImage} />
+      
         <View style={styles.wrapper}>
           <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
@@ -109,10 +119,11 @@ class DetailScreen extends Component {
               </View>
           </View>
 
+          
+
           <FlatList
             data={data}
             renderItem={this.renderItem}
-            // keyExtractor={item => item.id}
           />
         </View>
       </ScrollView>
@@ -122,7 +133,8 @@ class DetailScreen extends Component {
 
 const HeaderDetailContainer = createStackNavigator(
   {
-    defaulthome: DetailScreen
+    defaulthome: DetailScreen,
+    homeScreen: BerandaScreen
   },
   {
     /* The header config from HomeScreen is now here */
@@ -135,14 +147,7 @@ const HeaderDetailContainer = createStackNavigator(
                             marginRight={10}
                             size={22}>
                         </Icon.Button>,
-      headerLeft: () => <Icon.Button
-                            name="arrow-left"
-                            backgroundColor="white"
-                            color="grey"
-                            padding={0}
-                            marginLeft={10}
-                            size={22}>
-                        </Icon.Button>,
+      headerLeft: () => <TouchableOpacity onPress={() => this.props.navigation.navigate('BerandaScreen')}><Image source={Images.arrowLeft} style={styles.arrowLeft} /></TouchableOpacity>,
       headerTitle: () => <Text style={styles.TextDetail}>Top News</Text>,
       headerStyle: {
         backgroundColor: 'white',

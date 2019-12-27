@@ -13,6 +13,7 @@
 import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
 import firebase from 'react-native-firebase'
+import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import NavigationService from '../Services/NavigationServices'
 // import { LoginSelectors } from '../Redux/LoginRedux'
 
@@ -53,4 +54,9 @@ export function * login(action) {
         yield put(LoginActions.loginFailure())
       // set actions when got error
     }
+}
+
+export function * loginFacebook() {
+  alert("fbfunc")
+  
 }

@@ -1,4 +1,5 @@
 import { createAppContainer } from 'react-navigation'
+import TestScreen from '../Containers/TestScreen'
 import DetailScreen from '../Containers/DetailScreen'
 import RecommendedScreen from '../Containers/RecommendedScreen'
 import ShopScreen from '../Containers/ShopScreen'
@@ -13,6 +14,7 @@ import styles from './Styles/NavigationStyles'
 
 // Manifest of possible screens
 const PrimaryNav = createStackNavigator({
+  TestScreen: { screen: TestScreen },
   DetailScreen: { screen: DetailScreen },
   RecommendedScreen: { screen: RecommendedScreen },
   ShopScreen: { screen: ShopScreen },
@@ -24,7 +26,7 @@ const PrimaryNav = createStackNavigator({
 }, {
   // Default config for all screens
   headerMode: 'none',
-  initialRouteName: 'DetailScreen',
+  initialRouteName: 'LaunchScreen',
   navigationOptions: {
     headerStyle: styles.header
   }

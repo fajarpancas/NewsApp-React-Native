@@ -87,7 +87,9 @@ export default StyleSheet.create({
     height: '100%'
   },
   timeText:{
-    color: Colors.buttonLog
+    color: Colors.buttonLog,
+    fontSize: Fonts.size.small,
+    color: '#999999'
   },
   TextDetail: {
     marginLeft: 'auto',
@@ -100,5 +102,56 @@ export default StyleSheet.create({
     margin: 15,
     fontWeight: 'bold',
     color: 'black'
+  },
+  detailImage: {
+    width: Scale(343),
+    height: 205,
+    margin: 15
+  },
+  contentDetail: {
+    marginLeft: 15,
+    marginRight: 15,
+    fontSize: Fonts.size.h9
+  },
+  textShare: {
+    width: 60, 
+    marginLeft: 15, 
+    marginBottom: 35, 
+    marginTop: 10
+  },
+  imageSosial: {
+    width: 36, 
+    height: 36, 
+    marginRight: 10
+  },
+  total: {
+    marginTop: 5,
+    marginLeft: 5
+  },
+  shareIcon: {
+    marginTop: 5,
+    width: Scale(17),
+    height: 17,
+  },
+  view:{
+    width: Scale(55),
+    height: '100%',
+    flex: 1, 
+    flexDirection: 'row'
+  },
+  shared:{
+    width: Scale(55),
+    height: '100%',
+    marginLeft: 20,
+    flex: 1, 
+    flexDirection: 'row'
+  },
+  timeText:{
+    color: Colors.buttonLog
+  },
+  arrowLeft: {
+    width: 24,
+    height: 24,
+    marginLeft: 15
   }
 })

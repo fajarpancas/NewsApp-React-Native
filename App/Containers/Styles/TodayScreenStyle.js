@@ -75,12 +75,17 @@ export default StyleSheet.create({
     marginTop: 5
   },
   view:{
-    width: Scale(65),
+    width: Scale(55),
     height: '100%',
+    flex: 1, 
+    flexDirection: 'row'
   },
   shared:{
     width: Scale(55),
-    height: '100%'
+    height: '100%',
+    marginLeft: 20,
+    flex: 1, 
+    flexDirection: 'row'
   },
   timeText:{
     color: Colors.buttonLog
@@ -99,5 +104,14 @@ export default StyleSheet.create({
     borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
     paddingBottom: 10,
+  },
+  shareIcon: {
+    marginTop: 5,
+    width: Scale(17),
+    height: 17,
+  },
+  total: {
+    marginTop: 5,
+    marginLeft: 5
   }
 })

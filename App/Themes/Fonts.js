@@ -15,6 +15,7 @@ const size = {
   h6: 19,
   h7: 22,
   h8: 24,
+  h9: 15,
   input: 18,
   regular: 17,
   medium: 14,

@@ -1,5 +1,14 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { 
+  ScrollView, 
+  Text, 
+  Image, 
+  View, 
+  FlatList, 
+  TouchableOpacity, 
+  ActivityIndicator,
+  RefreshControl
+ } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -11,6 +20,7 @@ import Moment from 'moment'
 // Styles
 import styles from './Styles/TodayScreenStyle'
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Images } from '../Themes'
 // import { TouchableOpacity } from 'react-native-gesture-handler'
 
 class TodayScreen extends React.Component {
@@ -25,6 +35,7 @@ class TodayScreen extends React.Component {
   constructor(props){    
     super(props)
     this.state = {
+      isRefreshing: false,
       data: []
     }
   }
@@ -40,6 +51,14 @@ class TodayScreen extends React.Component {
   detail = (item) =>{
     this.props.navigation.navigate('DetailScreen', {
       dataDetail : item
+    })
+  }
+
+  _onRefresh = () =>{
+    this.setState({ isRefreshing: true }, () => {
+      setTimeout(() => {
+        this.setState({ isRefreshing: false })
+      }, 2000);
     })
   }
 
@@ -70,28 +89,12 @@ class TodayScreen extends React.Component {
                 <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
               </View>
               <View style={styles.view}>
-              <Icon.Button
-                  name="eye"
-                  backgroundColor="white"
-                  color="grey"
-                  padding={0}
-                  margin={5}
-                  size={9}
-                  onPress={this.loginWithFacebook}>
-                    <Text></Text>
-              </Icon.Button>
+                <Image source={Images.eye} style={styles.shareIcon} />
+                <Text style={styles.total}>125k</Text>
               </View>
               <View style={styles.shared}>
-              <Icon.Button
-                  name="share"
-                  backgroundColor="white"
-                  color="grey"
-                  padding={0}
-                  margin={5}
-                  size={9}
-                  onPress={this.loginWithFacebook}>
-                    <Text></Text>
-              </Icon.Button>      
+                <Image source={Images.share} style={styles.shareIcon} />
+                <Text style={styles.total}>125k</Text>
               </View>
           </View>
       </TouchableOpacity>
@@ -136,7 +139,12 @@ class TodayScreen extends React.Component {
                 <View><Text>Empty Data</Text></View>
               )
             }}
-            initialNumToRender={3}
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.isRefreshing}
+                onRefresh={this._onRefresh}
+              />
+            }
             // keyExtractor={(item, index) => index.toString()}
             // keyExtractor={item => item.id}
           />

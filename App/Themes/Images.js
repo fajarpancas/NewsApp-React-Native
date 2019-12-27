@@ -21,7 +21,28 @@ const images = {
   backButton: require('../Images/Icons/back-button.png'),
   closeButton: require('../Images/Icons/close-button.png'),
   bgnews: require('../Images/Launcher/Splash.png'),
-  logo_blue: require('../Images/logo_blue.png')
+  logo_blue: require('../Images/logo_blue.png'),
+  email: require('../Images/Sosial/Email.png'),
+  facebook: require('../Images/Sosial/Facebook.png'),
+  twitter: require('../Images/Sosial/Twitter.png'),
+  whatsapp: require('../Images/Sosial/Whatsapp.png'),
+  eye: require('../Images/CustomIcon/Eye.png'),
+  share: require('../Images/CustomIcon/Share.png'),
+  search: require('../Images/CustomIcon/Search.png'),
+  menu: require('../Images/CustomIcon/HamburgerMenu.png'),
+  arrowRight: require('../Images/CustomIcon/ArrowRight.png'),
+  arrowLeft: require('../Images/CustomIcon/ArrowLeft.png'),
+  cancel: require('../Images/CustomIcon/Cancel.png'),
+  newsMenu: require('../Images/IconMenu/News.png'),
+  videosMenu: require('../Images/IconMenu/Video.png'),
+  shopMenu: require('../Images/IconMenu/Shop.png'),
+  rewardMenu: require('../Images/IconMenu/Reward.png'),
+  subscripMenu: require('../Images/IconMenu/Subscription.png'),
+  accMenu: require('../Images/IconMenu/Account.png'),
+  advMenu: require('../Images/IconMenu/Advertise.png'),
+  setMenu: require('../Images/IconMenu/Setting.png'),
+  logoutMenu: require('../Images/IconMenu/Logout.png')
+
 }
 
 export default images
