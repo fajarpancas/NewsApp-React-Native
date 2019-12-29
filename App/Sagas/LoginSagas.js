@@ -12,6 +12,7 @@
 
 import { call, put } from 'redux-saga/effects'
 import LoginActions from '../Redux/LoginRedux'
+import SessionActions from '../Redux/SessionRedux'
 import firebase from 'react-native-firebase'
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import NavigationService from '../Services/NavigationServices'
@@ -44,19 +45,53 @@ export function * login(action) {
     const response = yield firebase.auth().signInWithEmailAndPassword(email, password)
     if (response && response.user.email == email) {
       // set actions when login success
-      alert('success')
+      // alert(JSON.stringify(response.user.uid))
+      yield put(SessionActions.saveUserAuth(response.data));
       yield put(LoginActions.loginSuccess(response.data))
-      NavigationService.navigate('BerandaScreen')
+      NavigationService.navigate('Main')
       }
     }
     catch (error) {
-        alert('failed')
+        alert(`${error}`)
         yield put(LoginActions.loginFailure())
       // set actions when got error
     }
 }
 
-export function * loginFacebook() {
-  alert("fbfunc")
+export function * loginFacebook(action) {
+  const { data } = action
+  const { token, name } = data
+  if(token !== undefined){
+    yield put(SessionActions.saveUserAuth(data));
+    NavigationService.navigate('Main')
+  }
   
 }
+
+export function * register(action) {
+
+  const { data } = action
+  const { email, password } = data
+  
+  yield firebase.database().goOnline()
+  try {
+    const response = yield firebase.auth().createUserWithEmailAndPassword(email, password)
+    if (response && response.user.email == email) {
+      // set actions when login success
+      alert(`Sign Up Success : ${JSON.stringify(response.user.uid)}`)
+      yield put(LoginActions.signUpSuccess(response.data))
+      NavigationService.navigate('Auth')
+      }
+    }
+    catch (error) {
+        alert(`${error}`)
+        yield put(LoginActions.signUpFailure())
+      // set actions when got error
+    }
+}
+
+export function* logout(action) {
+  yield put(SessionActions.removeSession());
+  NavigationService.navigate('Auth')
+}
+  

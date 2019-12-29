@@ -56,12 +56,11 @@ export default StyleSheet.create({
     marginRight: 5
   },
   boxImageTopNews:{
-    width: Scale(99),
-    backgroundColor: Colors.buttonLog,
+    width: Scale(100),
+    backgroundColor: Colors.snow,
     height: 72,
     marginRight: 15,
     marginLeft: 5,
-    backgroundColor: Colors.buttonLog,
     resizeMode : 'stretch'
   },  
   title: {
@@ -113,5 +112,13 @@ export default StyleSheet.create({
   total: {
     marginTop: 5,
     marginLeft: 5
+  },
+  advertise: {
+    padding: 15,
+    width: '90%',
+    height: 30,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 10
   }
 })

@@ -16,6 +16,8 @@ import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // <-- Add this line
+import cl.json.RNSharePackage;
+import cl.json.ShareApplication;
 
 
 import java.util.Arrays;
@@ -38,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
         // packages.add(new MyReactNativePackage());
         packages.add(new RNFirebaseDatabasePackage()); // <-- Add this line
         packages.add(new RNFirebaseAuthPackage());
+        new RNSharePackage();
         return packages;
       }
 

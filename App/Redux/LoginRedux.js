@@ -7,9 +7,13 @@ const { Types, Creators } = createActions({
   loginRequest: ['data'],
   loginSuccess: ['payload'],
   loginFailure: null,
+  signUpRequest: ['data'],
+  signUpSuccess: ['payload'],
+  signUpFailure: null,
   facebookLoginRequest: ['data'],
   facebookLoginSuccess: ['payload'],
-  facebookLoginFailure: ['error']
+  facebookLoginFailure: ['error'],
+  logout: ['callback']
 })
 
 export const LoginTypes = Types
@@ -25,6 +29,7 @@ export const DEFAULT_STATE = {
 
 export const INITIAL_STATE = Immutable({
   login: DEFAULT_STATE,
+  signUp: DEFAULT_STATE,
   facebookLogin: DEFAULT_STATE
 })
 
@@ -45,17 +50,32 @@ export const loginRequest = (state, { data }) => {
 // successful api lookup
 export const loginSuccess = (state, {payload}) => {
   // const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
+  return state.merge({ ...state, login: {fetching: false, error: null, payload} })
 }
 
 // Something went wrong somewhere.
 export const loginFailure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
+  state.merge({ ...state, login : {fetching: false, error: true, payload: null} })
 
-// request the data from an api
-export const facebookLoginRequest = (state) => {
+export const signUpRequest = (state, { data }) => {
   // alert(JSON.stringify(data))
-  return state.merge({ ...state, facebookLogin: {fetching: true, payload: null} })
+  return state.merge({ ...state, signUp: {fetching: true, data, payload: null} })
+}
+
+// successful api lookup
+export const signUpSuccess = (state, {payload}) => {
+  // const { payload } = action
+  return state.merge({ ...state, signUp: {fetching: false, error: null, payload} })
+}
+
+// Something went wrong somewhere.
+export const signUpFailure = state =>
+  state.merge({ ...state, signUp : {fetching: false, error: true, payload: null} })
+    
+// request the data from an api
+export const facebookLoginRequest = (state, { data }) => {
+  // alert(JSON.stringify(data))
+  return state.merge({ ...state, facebookLogin: {fetching: true, data, payload: null} })
 }
 
 // successful api lookup
@@ -68,14 +88,20 @@ export const facebookLoginSuccess = (state, {payload}) => {
 export const facebookLoginFailure = state =>
   state.merge({ ...state, facebookLogin: {fetching: false, error: true, payload: null} })
 
-
+export const logout = state => {
+    return state.merge({ ...state, ...INITIAL_STATE });
+  };
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN_REQUEST]: loginRequest,
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.LOGIN_FAILURE]: loginFailure,
+  [Types.SIGN_UP_REQUEST]: signUpRequest,
+  [Types.SIGN_UP_SUCCESS]: signUpSuccess,
+  [Types.SIGN_UP_FAILURE]: signUpFailure,
   [Types.FACEBOOK_LOGIN_REQUEST]: facebookLoginRequest,
   [Types.FACEBOOK_LOGIN_SUCCESS]: facebookLoginSuccess,
-  [Types.FACEBOOK_LOGIN_FAILURE]: facebookLoginFailure
+  [Types.FACEBOOK_LOGIN_FAILURE]: facebookLoginFailure,
+  [Types.LOGOUT]: logout
 })

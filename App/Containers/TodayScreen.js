@@ -1,27 +1,22 @@
 import React, { Component } from 'react'
-import { 
-  ScrollView, 
-  Text, 
-  Image, 
-  View, 
-  FlatList, 
-  TouchableOpacity, 
+import {
+  ScrollView,
+  Text,
+  Image,
+  View,
+  FlatList,
+  TouchableOpacity,
   ActivityIndicator,
   RefreshControl
- } from 'react-native'
+} from 'react-native'
 import { connect } from 'react-redux'
-// Add Actions - replace 'Your' with whatever your reducer is called :)
-// import YourActions from '../Redux/YourRedux'
-
 import TodayData from '../Redux/TodayRedux'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
 
 // Styles
 import styles from './Styles/TodayScreenStyle'
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { Images } from '../Themes'
-// import { TouchableOpacity } from 'react-native-gesture-handler'
 
 class TodayScreen extends React.Component {
   static propTypes = {
@@ -31,11 +26,16 @@ class TodayScreen extends React.Component {
     getTech: PropTypes.func,
     getVideo: PropTypes.func
   }
-  
-  constructor(props){    
+
+  constructor(props) {
     super(props)
     this.state = {
       isRefreshing: false,
+      isTop: false,
+      isBusiness: false,
+      isTech: false,
+      isVideo: false,
+      fetchingSeeAll: false,
       data: []
     }
   }
@@ -48,181 +48,384 @@ class TodayScreen extends React.Component {
     getVideo()
   }
 
-  detail = (item) =>{
+  detail = (item) => {
     this.props.navigation.navigate('DetailScreen', {
-      dataDetail : item
+      dataDetail: item
     })
   }
 
-  _onRefresh = () =>{
-    this.setState({ isRefreshing: true }, () => {
-      setTimeout(() => {
-        this.setState({ isRefreshing: false })
-      }, 2000);
-    })
+  _onRefresh = () => {
+    this.setState({ isRefreshing: true })
+    setTimeout(() => {
+      this.componentDidMount()
+      this.setState({ isRefreshing: false })
+    }, 1000);
   }
 
-  renderVideo = ({item}) =>{
-    return(
+  delaySeeAll = (type) => {
+    this.setState({ fetchingSeeAll: true })
+    setTimeout(() => {
+      this.setState({ fetchingSeeAll: false })
+      this.seeAll(type);
+    }, 1000);
+  }
+
+  delaySeeLess = (type) => {
+    this.setState({ fetchingSeeAll: true })
+    setTimeout(() => {
+      this.setState({ fetchingSeeAll: false })
+      this.seeLess(type);
+    }, 1000);
+  }
+
+  seeAll = (type) => {
+    if (type === 'top') {
+      this.setState({ isTop: true })
+    }
+    if (type === 'business') {
+      this.setState({ isBusiness: true })
+    }
+    if (type === 'tech') {
+      this.setState({ isTech: true })
+    }
+    if (type === 'video') {
+      this.setState({ isVideo: true })
+    }
+  }
+
+  seeLess = (type) => {
+    if (type === 'top') {
+      this.setState({ isTop: false })
+    }
+    if (type === 'business') {
+      this.setState({ isBusiness: false })
+    }
+    if (type === 'tech') {
+      this.setState({ isTech: false })
+    }
+    if (type === 'video') {
+      this.setState({ isVideo: false })
+    }
+  }
+
+  _renderRefreshControl() {
+    return (
+      <RefreshControl
+        refreshing={this.state.isRefreshing}
+        onRefresh={this._onRefresh}
+      />
+    );
+  };
+
+  renderVideo = ({ item }) => {
+    return (
       <View style={styles.containerVideo}>
-        <Image source={{uri: item.urlToImage}} style={styles.videoImage} />
+        <Image source={{ uri: item.urlToImage }} style={styles.videoImage} />
         <Text style={styles.titleVideo}>{item.title}</Text>
       </View>
     )
   }
 
-  renderItem = ({item}) => {
-    // alert(JSON.stringify(item))
+  renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
-        <View style={styles.boxTitleTopNews}>
-                <Text style={styles.title}>{item.title}</Text>
-              </View>
-              <View style={styles.boxImageTopNews}>
-                <Image source={{uri: item.urlToImage}} style={styles.boxImageTopNews} />
-                {/* <Text style={styles.image}>{item.image}</Text> */}
-              </View>
+          <View style={styles.boxTitleTopNews}>
+            <Text style={styles.title}>{item.title}</Text>
           </View>
-          <View style={styles.container2}>
-              <View style={styles.uploaded}>
-                <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
-              </View>
-              <View style={styles.view}>
-                <Image source={Images.eye} style={styles.shareIcon} />
-                <Text style={styles.total}>125k</Text>
-              </View>
-              <View style={styles.shared}>
-                <Image source={Images.share} style={styles.shareIcon} />
-                <Text style={styles.total}>125k</Text>
-              </View>
+          <View style={styles.boxImageTopNews}>
+            <Image source={{ uri: item.urlToImage }} style={styles.boxImageTopNews} />
           </View>
+        </View>
+        <View style={styles.container2}>
+          <View style={styles.uploaded}>
+            <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
+          </View>
+          <View style={styles.view}>
+            <Image source={Images.eye} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
+          <View style={styles.shared}>
+            <Image source={Images.share} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
+        </View>
       </TouchableOpacity>
     )
   }
 
-  render () {
-    const { getTopNewsData, newList, getBusiness, businessList, getTech, techList, getVideoData, videoList  } = this.props
-    const { fetching, payload, error } = getTopNewsData
+  render() {
+    const { getTopNewsData, newList, getBusiness, businessList, getTech, techList, getVideoData, videoList } = this.props
 
     if (getTopNewsData.fetching === true) {
-      return(
-        <ActivityIndicator size="large" style={{marginTop: 20}}></ActivityIndicator>
+      return (
+        <ActivityIndicator size="large" style={{ marginTop: 20 }}></ActivityIndicator>
       )
-      // return <RenderLoading />
     }
 
-    if (getTopNewsData.fetching === false && getTopNewsData.error === true){
-      return(
+    if (getTopNewsData.fetching === false && getTopNewsData.error === true) {
+      return (
         <View><Text>Failure Get Data</Text></View>
       )
     }
 
-    // if(getTopNewsData.fetching === false && getTopNewsData.payload !== undefined){
-    return (
-      <ScrollView>
+    if (getTopNewsData.fetching === false && getTopNewsData.payload !== undefined && getBusiness !== undefined && getTech !== undefined && getVideoData !== undefined
+      && this.state.isTop === false && this.state.isBusiness === false && this.state.isTech === false && this.state.isVideo === false && this.state.fetchingSeeAll === false) {
+      return (
+        <ScrollView refreshControl={this._renderRefreshControl()}>
           <View style={styles.wrapper}>
-          <View style={styles.containerHead}>
+            <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
                 <Text style={styles.topNewsTitle}>Top News</Text>
               </View>
               <View style={styles.boxTitle}>
-                <Text style={styles.seeAllText}>See all</Text>
+                <TouchableOpacity onPress={() => this.delaySeeAll('top')}>
+                  <Text style={styles.seeAllText}>See all</Text>
+                </TouchableOpacity>
               </View>
-          </View>
+            </View>
 
-          <FlatList
-            data={newList}
-            renderItem={this.renderItem}
-            ListEmptyComponent={() => {
-              return (
-                <View><Text>Empty Data</Text></View>
-              )
-            }}
-            refreshControl={
-              <RefreshControl
-                refreshing={this.state.isRefreshing}
-                onRefresh={this._onRefresh}
-              />
-            }
-            // keyExtractor={(item, index) => index.toString()}
-            // keyExtractor={item => item.id}
-          />
+            <FlatList
+              data={newList && newList.length ? newList.slice(0, 3) : newList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              // keyExtractor={(item, index) => index.toString()}
+              keyExtractor={item => item.author}
+            />
 
-          <View style={styles.contentAdvert}></View>
+            <View style={styles.contentAdvert}>
+              <Image source={Images.advertise} style={styles.advertise} resizeMode='stretch' />
+            </View>
 
-          <View style={styles.containerHead}>
+            <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
                 <Text style={styles.topNewsTitle}>Videos</Text>
               </View>
               <View style={styles.boxTitle}>
-                <Text style={styles.seeAllText}>See all</Text>
+                <TouchableOpacity onPress={() => this.delaySeeAll('video')}>
+                  <Text style={styles.seeAllText}>See all</Text>
+                </TouchableOpacity>
               </View>
-          </View>
+            </View>
 
-          <FlatList
-          horizontal
-            data={videoList}
-            renderItem={this.renderVideo}
-            showsHorizontalScrollIndicator={false}
-            ListEmptyComponent={() => {
-              return (
-                <View><Text>Empty Data</Text></View>
-              )
-            }}
+            <FlatList
+              horizontal
+              data={videoList && videoList.length ? videoList.slice(0, 3) : videoList}
+              renderItem={this.renderVideo}
+              showsHorizontalScrollIndicator={false}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              keyExtractor={item => item.author}
+
             // keyExtractor={item => item.id}
-          />
+            />
 
-          <View style={styles.containerHead}>
+            <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
                 <Text style={styles.topNewsTitle}>Business</Text>
               </View>
               <View style={styles.boxTitle}>
-                <Text style={styles.seeAllText}>See all</Text>
+                <TouchableOpacity onPress={() => this.delaySeeAll('business')}>
+                  <Text style={styles.seeAllText}>See all</Text>
+                </TouchableOpacity>
               </View>
-          </View>
+            </View>
 
-          <FlatList
-            data={businessList}
-            renderItem={this.renderItem}
-            ListEmptyComponent={() => {
-              return (
-                <View><Text>Empty Data</Text></View>
-              )
-            }}
+            <FlatList
+              data={businessList && businessList.length ? businessList.slice(0, 3) : businessList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              keyExtractor={item => item.author}
+
             // keyExtractor={item => item.id}
-          />
+            />
 
-          <View style={styles.contentAdvert}></View>
+            <View style={styles.contentAdvert}>
+              <Image source={Images.advertise} style={styles.advertise} resizeMode='stretch' />
+            </View>
 
-          <View style={styles.containerHead}>
+            <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
                 <Text style={styles.topNewsTitle}>Technology</Text>
               </View>
               <View style={styles.boxTitle}>
-                <Text style={styles.seeAllText}>See all</Text>
+                <TouchableOpacity onPress={() => this.delaySeeAll('tech')}>
+                  <Text style={styles.seeAllText}>See all</Text>
+                </TouchableOpacity>
               </View>
-          </View>
+            </View>
 
-          <FlatList
-            data={techList}
-            renderItem={this.renderItem}
-            ListEmptyComponent={() => {
-              return (
-                <View><Text>Empty Data</Text></View>
-              )
-            }}
-            // keyExtractor={item => item.id}
-          />
-          </View>  
-      </ScrollView>
+            <FlatList
+              data={techList && techList.length ? techList.slice(0, 3) : techList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              // keyExtractor={item => item.id}
+              keyExtractor={item => item.author}
+
+            />
+          </View>
+        </ScrollView>
+
       )
     }
-  // }
+
+    if (this.state.fetchingSeeAll === true) {
+      return (
+        <ActivityIndicator size="large" style={{ marginTop: 20 }}></ActivityIndicator>
+      )
+    }
+
+    if (newList && this.state.isTop === true) {
+      return (
+        <ScrollView refreshControl={this._renderRefreshControl()}>
+          <View style={styles.wrapper}>
+            <View style={styles.containerHead}>
+              <View style={styles.boxTitle}>
+                <Text style={styles.topNewsTitle}>All Top News</Text>
+              </View>
+              <View style={styles.boxTitle}>
+                <TouchableOpacity onPress={() => this.delaySeeLess('top')}>
+                  <Text style={styles.seeAllText}>See Less</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <FlatList
+              data={newList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              // keyExtractor={(item, index) => index.toString()}
+              // keyExtractor={item => item.id}
+              keyExtractor={item => item.author}
+
+            />
+          </View>
+        </ScrollView>
+      )
+    }
+
+    if (newList && this.state.isBusiness === true) {
+      return (
+        <ScrollView refreshControl={this._renderRefreshControl()}>
+          <View style={styles.wrapper}>
+            <View style={styles.containerHead}>
+              <View style={styles.boxTitle}>
+                <Text style={styles.topNewsTitle}>All Business</Text>
+              </View>
+              <View style={styles.boxTitle}>
+                <TouchableOpacity onPress={() => this.delaySeeLess('business')}>
+                  <Text style={styles.seeAllText}>See Less</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <FlatList
+              data={businessList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              keyExtractor={item => item.author}
+
+            // keyExtractor={(item, index) => index.toString()}
+            // keyExtractor={item => item.id}
+            />
+          </View>
+        </ScrollView>
+      )
+    }
+
+    if (newList && this.state.isVideo === true) {
+      return (
+        <ScrollView refreshControl={this._renderRefreshControl()}>
+          <View style={styles.wrapper}>
+            <View style={styles.containerHead}>
+              <View style={styles.boxTitle}>
+                <Text style={styles.topNewsTitle}>All Video</Text>
+              </View>
+              <View style={styles.boxTitle}>
+                <TouchableOpacity onPress={() => this.delaySeeLess('video')}>
+                  <Text style={styles.seeAllText}>See Less</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <FlatList
+              data={videoList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              keyExtractor={item => item.author}
+
+            // keyExtractor={(item, index) => index.toString()}
+            // keyExtractor={item => item.id}
+            />
+          </View>
+        </ScrollView>
+      )
+    }
+
+    if (techList && this.state.isTech === true) {
+      return (
+        <ScrollView refreshControl={this._renderRefreshControl()}>
+          <View style={styles.wrapper}>
+            <View style={styles.containerHead}>
+              <View style={styles.boxTitle}>
+                <Text style={styles.topNewsTitle}>All Technology</Text>
+              </View>
+              <View style={styles.boxTitle}>
+                <TouchableOpacity onPress={() => this.delaySeeLess('tech')}>
+                  <Text style={styles.seeAllText}>See Less</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+
+            <FlatList
+              data={techList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              keyExtractor={item => item.author}
+            />
+          </View>
+        </ScrollView>
+      )
+    }
+
+    return (
+      <View><Text></Text></View>
+    )
+  }
 }
 
 const mapStateToProps = (state) => {
-  // alert(JSON.stringify(state.news.videoList.articles.length))
   return {
     getTopNewsData: state.news.getTopNews,
     newList: state.news.newsTopList.articles,

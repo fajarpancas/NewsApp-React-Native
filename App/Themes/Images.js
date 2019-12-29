@@ -41,8 +41,8 @@ const images = {
   accMenu: require('../Images/IconMenu/Account.png'),
   advMenu: require('../Images/IconMenu/Advertise.png'),
   setMenu: require('../Images/IconMenu/Setting.png'),
-  logoutMenu: require('../Images/IconMenu/Logout.png')
-
+  logoutMenu: require('../Images/IconMenu/Logout.png'),
+  advertise: require('../Images/Advert/advertise.png')
 }
 
 export default images

@@ -1,62 +1,120 @@
 import React, { Component } from 'react';
 import { Text, View, Image, ScrollView, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Share from 'react-native-share';
 import { Images } from '../Themes'
 import styles from './Styles/DetailScreenStyle'
 import Moment from 'moment'
-import BerandaScreen from './BerandaScreen';
+import TodayData from '../Redux/TodayRedux'
+import { ShareDialog } from 'react-native-fbsdk'
+import { connect } from 'react-redux'
 
 class DetailScreen extends Component {
   constructor(props){
     super(props)
+    this.childDiv = React.createRef()
     this.state = {
-      detail: [],
-      data: [
-        {
-          id: 1,
-          title: 'Trumps says new U.S law on Hong Kong doesn’t help China trade talks',
-          image: 'https://reactnativecode.com/wp-content/uploads/2017/05/react_thumb_install.png',
-          upload: 2,
-          view: 110,
-          share: 131
-        },
-        {
-          id: 2,
-          title: 'Elon Musk’s jury to be queried on opinions of billionaires',
-          image: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-          upload: 2,
-          view: 120,
-          share: 111
-        },
-        {
-          id: 3,
-          title: 'China’s Xiaomi launches online lending service in India',
-          image: 'https://facebook.github.io/react-native/img/tiny_logo.png',
-          upload: 2,
-          view: 125,
-          share: 112
-        },
-      ]
+      seeAll: false,
+      fetching: false
     }
   }
   
+  shared = (data, sosmed) => {
+    if(sosmed == 'fb'){
+      const shareOptions = {
+        title: data.title,
+        message: data.content,
+        url: data.url,
+        social: Share.Social.FACEBOOK,
+        filename: 'test' , // only for base64 file in Android 
+      };
+      Share.shareSingle(shareOptions);
+    }
+    else if(sosmed == 'tw'){
+      const shareOptions = {
+        title: data.title,
+        message: data.content,
+        url: data.url,
+        social: Share.Social.TWITTER,
+      };
+      Share.shareSingle(shareOptions);
+    }
+    else if(sosmed == 'wa'){
+      const shareOptions = {
+        title: data.title,
+        message: data.content,
+        url: data.url,
+        social: Share.Social.WHATSAPP,
+        whatsAppNumber: "9199999999",  // country code + phone number(currently only works on Android)
+        filename: 'test' , // only for base64 file in Android 
+      };
+      Share.shareSingle(shareOptions);
+    }
+    else if(sosmed == 'em'){
+      const shareOptions = {
+        title: data.title,
+        message: data.content,
+        url: data.url,
+        social: Share.Social.EMAIL,
+        whatsAppNumber: "9199999999",  // country code + phone number(currently only works on Android)
+        filename: 'test' , // only for base64 file in Android 
+      };
+      Share.shareSingle(shareOptions);
+    }
+  }
+    
+  shareLinkWithShareDialog(description) {
+    const shareLinkContent = {
+      contentType: 'link',
+      contentUrl: "https://twitter.com",
+      contentDescription: description,
+    };
+    var tmp = this;
+    ShareDialog.canShow(shareLinkContent).then(
+      function(canShow) {
+        if (canShow) {
+          return ShareDialog.show(shareLinkContent);
+        }
+      }
+    ).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log('Share cancelled');
+        } else {
+          console.log('Share success with postId: '
+            + result.postId);
+        }
+      },
+      function(error) {
+        console.log('Share fail with error: ' + error);
+      }
+    );
+  }
+
   componentDidMount() {
-    // this.setState({
-    //   detail : this.props.navigation.state.params.dataDetail
-    // })
+    this.props.getTech()
+  }
+
+  seeAll = () => {
+    this.setState({
+      seeAll: !this.state.seeAll
+    })
+  }
+
+  detail = (item) => {
+    this.props.navigation.navigate('DetailScreen', {
+      dataDetail: item
+    })
   }
 
   renderItem = ({item}) => {
     return (
-      <View>
+      <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
             <View style={styles.boxTitleTopNews}>
               <Text style={styles.title}>{item.title}</Text>
             </View>
             <View style={styles.boxImageTopNews}>
-              <Image source={{uri: item.image}} style={styles.boxImageTopNews} />
+              <Image source={{uri: item.urlToImage}} style={styles.boxImageTopNews} />
               {/* <Text style={styles.image}>{item.image}</Text> */}
             </View>
           </View>
@@ -73,12 +131,13 @@ class DetailScreen extends Component {
               <Text style={styles.total}>125k</Text>
             </View>      
           </View>
-      </View>
+      </TouchableOpacity>
     )
   }
 
   render () {
-    const { data} = this.state
+    const { data, seeAll } = this.state
+    const { getTech, techList } = this.props
 
     return (
       <ScrollView> 
@@ -99,10 +158,18 @@ class DetailScreen extends Component {
 
         <View style={{flex: 1, flexDirection: 'row'}}>
           <Text style={styles.textShare}>Share to : </Text>
-          <Image source={Images.facebook} style={styles.imageSosial} />
-          <Image source={Images.twitter} style={styles.imageSosial} />
-          <Image source={Images.whatsapp} style={styles.imageSosial} />
-          <Image source={Images.email} style={styles.imageSosial} />
+          <TouchableOpacity onPress={() => this.shared(this.props.navigation.state.params.dataDetail, 'fb')}>
+            <Image source={Images.facebook} style={styles.imageSosial} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.shared(this.props.navigation.state.params.dataDetail, 'tw')}>
+            <Image source={Images.twitter} style={styles.imageSosial} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.shared(this.props.navigation.state.params.dataDetail, 'wa')}>
+            <Image source={Images.whatsapp} style={styles.imageSosial} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.shared(this.props.navigation.state.params.dataDetail, 'em')}>
+            <Image source={Images.email} style={styles.imageSosial} />
+          </TouchableOpacity>
         </View>
 
         {/* content */}
@@ -115,49 +182,41 @@ class DetailScreen extends Component {
                 <Text style={styles.topNewsTitle}>Recomemended News</Text>
               </View>
               <View style={styles.boxTitle2}>
-                <Text style={styles.seeAllText}>See all</Text>
+                <TouchableOpacity onPress={() => this.seeAll()}>
+                  <Text style={styles.seeAllText}>{seeAll ? 'See Less' : 'See all'}</Text>
+                </TouchableOpacity>
               </View>
           </View>
-
           
-
           <FlatList
-            data={data}
-            renderItem={this.renderItem}
-          />
+              data={techList && techList.length && !seeAll ? techList.slice(0, 3) : techList}
+              renderItem={this.renderItem}
+              ListEmptyComponent={() => {
+                return (
+                  <View><Text>Empty Data</Text></View>
+                )
+              }}
+              // keyExtractor={item => item.id}
+              keyExtractor={item => item.author}
+
+            />
         </View>
       </ScrollView>
     )
   }
 }
 
-const HeaderDetailContainer = createStackNavigator(
-  {
-    defaulthome: DetailScreen,
-    homeScreen: BerandaScreen
-  },
-  {
-    /* The header config from HomeScreen is now here */
-    defaultNavigationOptions: {
-      headerRight: () => <Icon.Button
-                            name="search"
-                            backgroundColor="white"
-                            color="white"
-                            padding={0}
-                            marginRight={10}
-                            size={22}>
-                        </Icon.Button>,
-      headerLeft: () => <TouchableOpacity onPress={() => this.props.navigation.navigate('BerandaScreen')}><Image source={Images.arrowLeft} style={styles.arrowLeft} /></TouchableOpacity>,
-      headerTitle: () => <Text style={styles.TextDetail}>Top News</Text>,
-      headerStyle: {
-        backgroundColor: 'white',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-        textAlign: 'center'
-      },
-    },
-})
+const mapStateToProps = (state) => {
+  return {
+    getTechno: state.news.getTech,
+    techList: state.news.TechList.articles
+  }
+}
 
-export default createAppContainer(HeaderDetailContainer);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getTech: () => dispatch(TodayData.getTechnoRequest()),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(DetailScreen)

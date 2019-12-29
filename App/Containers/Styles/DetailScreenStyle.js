@@ -46,11 +46,11 @@ export default StyleSheet.create({
     margin: 15
   },
   boxTitle: {
-    width: '80%',
+    width: '75%',
     height: '100%'
   },
   boxTitle2: {
-    width: '20%',
+    width: '25%',
     height: '100%'
   },
   boxTitleTopNews:{
@@ -61,11 +61,9 @@ export default StyleSheet.create({
   },
   boxImageTopNews:{
     width: Scale(99),
-    backgroundColor: Colors.buttonLog,
     height: 72,
     marginRight: 15,
     marginLeft: 5,
-    backgroundColor: Colors.buttonLog,
     resizeMode : 'stretch'
   },  
   title: {

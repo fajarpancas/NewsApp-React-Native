@@ -15,7 +15,7 @@ import { LoginTypes } from '../Redux/LoginRedux'
 import { startup } from './StartupSagas'
 import { getUserAvatar } from './GithubSagas'
 import { getToday, getBusinessToday, getTechToday, getVideoToday } from './TodaySagas'
-import { login, loginFacebook } from './LoginSagas'
+import { login, register, loginFacebook, logout } from './LoginSagas'
 
 /* ------------- API ------------- */
 
@@ -37,6 +37,8 @@ export default function * root () {
     takeLatest(TodayTypes.GET_TECHNO_REQUEST, getTechToday, api),
     takeLatest(TodayTypes.GET_VIDEO_REQUEST, getVideoToday, api),
     takeLatest(LoginTypes.LOGIN_REQUEST, login),
+    takeLatest(LoginTypes.LOGOUT, logout),
+    takeLatest(LoginTypes.SIGN_UP_REQUEST, register),
     takeLatest(LoginTypes.FACEBOOK_LOGIN_REQUEST, loginFacebook)
   ])
 }
