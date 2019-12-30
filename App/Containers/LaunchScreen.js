@@ -40,7 +40,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    startup: () => dispatch(StartupActions.startup())
+    startup: () => 
+    dispatch(StartupActions.startup())
   }
 }
 

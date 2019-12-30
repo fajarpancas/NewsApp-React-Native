@@ -11,6 +11,7 @@ import { Images } from '../Themes'
 import styles from './Styles/BerandaScreenStyle'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SideMenuScreen from './SideMenuScreen'
+import Scale from '../Transforms/Scale'
 
 
 const TabNavigator = createMaterialTopTabNavigator({
@@ -35,7 +36,7 @@ tabBarOptions: {
     fontWeight: 'bold'
   },
   tabStyle: {
-    width: 115,
+    width: Scale(120),
   },
   indicatorStyle: {
     borderBottomColor: '#21409A',

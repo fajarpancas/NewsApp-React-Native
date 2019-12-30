@@ -41,6 +41,7 @@ class TodayScreen extends React.Component {
   }
 
   componentDidMount() {
+    // alert('get')
     const { getTopNews, getBusiness, getTech, getVideo } = this.props
     getTopNews()
     getBusiness(),

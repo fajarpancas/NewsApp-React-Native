@@ -31,8 +31,17 @@ const MainStack = createStackNavigator(
   {
     Beranda: {
       screen: BerandaScreen,
-      navigationOptions: ({navigation}) => ({
-        headerLeft: () => <TouchableOpacity onPress={() => navigation.openDrawer()}><Image source={Images.menu} style={styles.menus} /></TouchableOpacity>,
+      navigationOptions: ({ navigation }) => ({
+        headerLeft: () => <TouchableOpacity onPress={() => {
+          navigation.state.isDrawerOpen ? navigation.closeDrawer() : navigation.openDrawer()
+        }
+        }>
+          {
+            navigation.state.isDrawerOpen ?
+              <Image source={Images.cancel} style={styles.menus} /> :
+              <Image source={Images.menu} style={styles.menus} />
+          }
+        </TouchableOpacity>,
         headerTitle: () => <Image source={Images.logo_blue} style={styles.logoBlue} resizeMode='stretch' />,
         headerRight: () => <Image source={Images.search} style={styles.search} />,
         headerStyle: {

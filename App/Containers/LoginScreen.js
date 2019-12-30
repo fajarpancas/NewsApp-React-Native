@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, ActivityIndicator, TouchableOpacity, Image, View, TextInput, Button } from 'react-native'
+import { Icon, Text, ActivityIndicator, TouchableOpacity, Image, View, TextInput, Button } from 'react-native'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
@@ -34,6 +34,7 @@ class LoginScreen extends Component {
       userId: '',
       userIdError: true,
       showPassword: true,
+      showConfirmPassword: true,
       password: '',
       confirmPass: '',
       accessToken: '',
@@ -64,6 +65,8 @@ class LoginScreen extends Component {
       nameError: null,
       passError: null,
       confirmPassError: null,
+      showConfirmPassword: true,
+      showPassword: true,
       password: '',
       userId: '',
       confirmPass: ''
@@ -82,7 +85,7 @@ class LoginScreen extends Component {
       alert('Password and Confirm Password not match')
       this.setState({ submit: false })
     }
-    else {
+    else if (correctEmail) {
       let data = {
         email: this.state.userId,
         password: this.state.password,
@@ -131,22 +134,23 @@ class LoginScreen extends Component {
   }
 
   signIn = async () => {
-    try {
-      // add any configuration settings here:
-      await GoogleSignin.configure();
+    alert('On Progress')
+    // try {
+    //   // add any configuration settings here:
+    //   await GoogleSignin.configure();
 
-      const data = await GoogleSignin.signIn();
+    //   const data = await GoogleSignin.signIn();
 
-      // create a new firebase credential with the token
-      const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
-      // login with credential
-      const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-      alert(`token : ${JSON.stringify(firebaseUserCredential)}`)
-      console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
-    } catch (e) {
-      console.log("cancel");
-      console.log(data)
-    }
+    //   // create a new firebase credential with the token
+    //   const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
+    //   // login with credential
+    //   const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
+    //   alert(`token : ${JSON.stringify(firebaseUserCredential)}`)
+    //   console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
+    // } catch (e) {
+    //   console.log("cancel");
+    //   console.log(data)
+    // }
   };
 
   facebookCallback = (error, result) => {
@@ -195,12 +199,25 @@ class LoginScreen extends Component {
     )
   }
 
+  showPass = () => {
+    this.setState({
+      showPassword: !this.state.showPassword
+    })
+  }
+
+  showConfirmPass = () => {
+    this.setState({
+      showConfirmPassword: !this.state.showConfirmPassword
+    })
+  }
+
   render() {
     const {
       userId,
       password,
       confirmPass,
       showPassword,
+      showConfirmPassword,
       signUp,
       nameError,
       passError,
@@ -212,48 +229,82 @@ class LoginScreen extends Component {
       <View style={styles.MainContainer}>
         <Image source={Images.logo_blue} style={styles.logoBlue} resizeMode='stretch' />
         <Text style={styles.loginText}>{signUp ? 'Sign up' : 'Log in to my account'}</Text>
-        <TextInput
-          style={styles.formLogin}
-          returnKeyType="next"
-          value={userId}
-          placeholder="Email"
-          onChangeText={(text) => this.onChangeEmail(text)}
-        />
-        {!!this.state.nameError && (
+        <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.passInput}
+            placeholder="Password"
+            returnKeyType="next"
+            value={userId}
+            placeholder="Email"
+            onChangeText={(text) => this.onChangeEmail(text)}
+            underlineColorAndroid="transparent"
+          />
+        </View>
+        {!!nameError && (
           <Text style={styles.dangerText}>{nameError}</Text>
         )}
-        <TextInput
-          style={styles.formLogin}
-          placeholder="Password"
-          value={password}
-          returnKeyType="next"
-          maxLength={15}
-          secureTextEntry={true}
-          onChangeText={(text) => this.onChangePass(text)}
-        />
+        <View style={styles.SectionStyle}>
+          <TextInput
+            style={styles.passInput}
+            placeholder="Password"
+            value={password}
+            returnKeyType="next"
+            maxLength={15}
+            secureTextEntry={showPassword}
+            onChangeText={(text) => this.onChangePass(text)}
+            underlineColorAndroid="transparent"
+          />
+          <TouchableOpacity onPress={() => this.showPass()}>
+            {
+              showPassword ?
+                <Image
+                  source={Images.eye}
+                  style={styles.ImageStyle}
+                /> :
+                <Text style={{ marginRight: 15 }}>Hide</Text>
+            }
+          </TouchableOpacity>
+
+        </View>
+
         {!!passError && (
           <Text style={styles.dangerText}>{passError}</Text>
         )}
 
-        {this.state.signUp ?
-          <TextInput
-            style={styles.formLogin}
-            returnKeyType="next"
-            value={confirmPass}
-            maxLength={15}
-            placeholder="Confirm Password"
-            secureTextEntry={true}
-            onChangeText={(text) => this.onChangeConfirmPass(text)}
-          /> : null
+        {signUp ?
+          <View style={styles.SectionStyle}>
+            <TextInput
+              style={styles.passInput}
+              placeholder="Confirm Password"
+              value={confirmPass}
+              returnKeyType="next"
+              maxLength={15}
+              secureTextEntry={showConfirmPassword}
+              onChangeText={(text) => this.onChangeConfirmPass(text)}
+              underlineColorAndroid="transparent"
+            />
+            <TouchableOpacity onPress={() => this.showConfirmPass()}>
+              {
+                showConfirmPassword ?
+                  <Image
+                    source={Images.eye}
+                    style={styles.ImageStyle}
+                  /> :
+                  <Text style={{ marginRight: 15 }}>Hide</Text>
+              }
+            </TouchableOpacity>
+          </View>
+          : null
         }
         {!!confirmPassError && (
-          <Text style={styles.dangerText}>{thisconfirmPassError}</Text>
+          <Text style={styles.dangerText}>{confirmPassError}</Text>
         )}
+
 
         {submit ? <ActivityIndicator size="small" style={{ margin: 10 }}></ActivityIndicator> :
           <TouchableOpacity onPress={() => {
             if (signUp) {
-              if (userId === '' && password === '' && state.confirmPass === '') {
+              if (userId === '' && password === '' && confirmPass === '') {
                 this.setState(() => ({ nameError: "*Email required." }));
                 this.setState(() => ({ passError: "*Password required." }));
                 this.setState(() => ({ confirmPassError: "*Confirm Password required." }));
@@ -309,17 +360,31 @@ class LoginScreen extends Component {
         }
         <Text style={styles.forgotPass}>{signUp ? null : 'Forgot Password ?'}</Text>
         {signUp ? null :
-          <TouchableOpacity
-            style={styles.buttonFb}
-            onPress={this.loginWithFb}>
-            <Text style={styles.loginFbText}>Login with Facebook</Text>
+          <TouchableOpacity onPress={this.loginWithFb}>
+            <View style={styles.SectionStyleBtn}>
+              <Image
+                source={Images.facebook}
+                style={styles.ImageStyleBtn}
+              />
+              <Text
+                style={styles.buttonFb}>
+                <Text style={styles.loginFbText}>Login with Facebook</Text>
+              </Text>
+            </View>
           </TouchableOpacity>
         }
-        {this.state.signUp ? null :
-          <TouchableOpacity
-            style={styles.buttonGoogle}
-            onPress={this.signIn}>
-            <Text style={styles.loginGoogle}>Login with Google</Text>
+        {signUp ? null :
+          <TouchableOpacity onPress={this.signIn}>
+            <View style={styles.SectionStyleBtnGoogle}>
+              <Image
+                source={Images.google}
+                style={styles.ImageStyleBtn}
+              />
+              <Text
+                style={styles.buttonGoogle}>
+                <Text style={styles.loginGoogle}>Login with Google</Text>
+              </Text>
+            </View>
           </TouchableOpacity>
         }
         <View style={styles.bottomView}>

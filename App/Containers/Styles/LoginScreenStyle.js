@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import { ApplicationStyles, Fonts, Colors } from '../../Themes/'
 import Scale from '../../Transforms/Scale'
 
@@ -8,9 +8,9 @@ export default StyleSheet.create({
   {
     flex: 1,
   },
-  dangerText:{
-    color: 'red', 
-    marginLeft: 20, 
+  dangerText: {
+    color: 'red',
+    marginLeft: 20,
     marginTop: 0,
     fontFamily: Fonts.type.SPF,
     fontSize: Fonts.size.medium
@@ -23,23 +23,26 @@ export default StyleSheet.create({
     marginTop: '13%',
     marginBottom: '7%'
   },
-  loginText:{
+  loginText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: Fonts.size.input,
     fontWeight: 'bold',
     marginLeft: 'auto',
     marginRight: 'auto',
-    color: 'black'
+    color: 'black',
+    marginBottom: 10,
+    marginTop: 10
   },
   buttonLogIn: {
     backgroundColor: Colors.buttonLog,
     height: 48,
-    marginTop: '3%',
-    marginBottom: '4%',
-    marginLeft: 20,
-    marginRight: 20
+    borderRadius: 5,
+    marginTop: 15,
+    marginBottom: 15,
+    width: Dimensions.get('window').width * 0.89,
+    alignSelf: 'center'
   },
-  buttonLogInText:{
+  buttonLogInText: {
     color: Colors.snow,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -48,11 +51,11 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     fontSize: Fonts.size.loginButton
   },
-  forgotPass:{
+  forgotPass: {
     color: Colors.buttonLog,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: '4%'
+    marginBottom: '15%'
   },
   textSignUpLink: {
     color: Colors.buttonLog,
@@ -60,42 +63,27 @@ export default StyleSheet.create({
     marginRight: 'auto',
     fontWeight: 'bold'
   },
-  formLogin:{
-    fontFamily: Fonts.type.SPF,
-    fontSize: Fonts.size.medium,
-    borderWidth: 1,
-    borderColor: 'lightgrey',
-    marginLeft: 20,
-    marginRight: 20,
-    height: 48,
-    paddingLeft: '5%',
-    marginTop: '3%'
-  },
-  bottomView:{
-    width: '100%', 
-    height: 50, 
+  bottomView: {
+    width: '100%',
+    height: 50,
     borderTopColor: '#dddddd',
-    borderTopWidth: 1, 
-    justifyContent: 'center', 
+    borderTopWidth: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom:0,alignSelf:'flex-end',
+    top: Dimensions.get('window').height * 0.89,
+    alignSelf: 'flex-end',
     color: 'black',
     fontFamily: Fonts.type.SPF,
     fontSize: Fonts.size.medium
   },
   buttonFb: {
-    backgroundColor: Colors.snow,
-    height: 48,
-    marginBottom: '2%',
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: Colors.buttonLog,
-    borderWidth: 1,
-    padding: 10
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 5
   },
   loginFbText: {
-    color: Colors.buttonLog,
+    color: Colors.snow,
     marginLeft: 'auto',
     marginRight: 'auto',
     lineHeight: 30,
@@ -104,22 +92,82 @@ export default StyleSheet.create({
     fontSize: Fonts.size.loginButton
   },
   buttonGoogle: {
-    backgroundColor: Colors.snow,
-    height: 48,
-    marginBottom: '4%',
-    marginLeft: 20,
-    marginRight: 20,
-    borderColor: Colors.fire,
-    borderWidth: 1,
-    padding: 10
+    alignSelf: 'center',
+    padding: 10,
+    borderRadius: 5
   },
   loginGoogle: {
-    color: Colors.fire,
+    color: '#ea4335',
     marginLeft: 'auto',
     marginRight: 'auto',
     lineHeight: 30,
-    fontFamily: Fonts.type.SPF,
     fontWeight: 'bold',
+    fontFamily: Fonts.type.SPF,
     fontSize: Fonts.size.loginButton
+  },
+  SectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    height: 48,
+    borderRadius: 5,
+    width: Dimensions.get('window').width * 0.89,
+    alignSelf: 'center',
+    marginTop: 10,
+    paddingLeft: 15,
+    fontFamily: Fonts.type.SPF,
+    fontSize: Fonts.size.loginButton
+  },
+  SectionStyleBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#3b5998',
+    borderWidth: 1,
+    borderColor: 'lightgrey',
+    height: 48,
+    borderRadius: 5,
+    width: Dimensions.get('window').width * 0.89,
+    alignSelf: 'center',
+    marginBottom: 10,
+    paddingLeft: 15,
+    fontFamily: Fonts.type.SPF,
+    fontSize: Fonts.size.loginButton
+  },
+  SectionStyleBtnGoogle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.snow,
+    borderWidth: 1,
+    borderColor: '#ea4335',
+    height: 48,
+    borderRadius: 5,
+    width: Dimensions.get('window').width * 0.89,
+    alignSelf: 'center',
+    marginBottom: 5,
+    paddingLeft: 15,
+    fontFamily: Fonts.type.SPF,
+    fontSize: Fonts.size.loginButton
+  },
+  ImageStyle: {
+    padding: 10,
+    margin: 5,
+    marginRight: 15,
+    height: 20,
+    width: 20,
+    resizeMode: 'stretch',
+    alignSelf: 'flex-end'
+  },
+  ImageStyleBtn: {
+    padding: 10,
+    height: 30,
+    width: 30
+  },
+  passInput: {
+    flex: 1,
   }
 })

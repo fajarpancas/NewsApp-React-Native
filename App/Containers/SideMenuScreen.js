@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 // import styles from './Styles/SideMenuScreenStyle'
 import styles from './Styles/BerandaScreenStyle'
 import LoginData from '../Redux/LoginRedux'
-import { Images } from '../Themes'
+import { Images, Colors, Fonts } from '../Themes'
 
 class SideMenuScreen extends React.Component{
   static propTypes = {
@@ -41,22 +41,22 @@ class SideMenuScreen extends React.Component{
   render() {
     return (
       <View style={{flex: 1} }>
-        <View style={styles.containerHead}>
+        {/* <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
                 <Image source={Images.logo_blue} style={styles.logoDrawer} resizeMode='stretch' />
               </View>
               <View style={styles.boxClose}>
                 <TouchableOpacity onPress={() => this.props.navigation.closeDrawer()}><Image source={Images.cancel} style={styles.search} resizeMode='stretch' /></TouchableOpacity>
               </View>
-          </View>
+          </View> */}
           <ScrollView>
           <View style={styles.container}>
               <View style={styles.boxIcon}>
-                <Image source={Images.newsMenu} style={styles.search} resizeMode='stretch' />
+                <Image source={Images.newsMenuFocused} style={styles.search} resizeMode='stretch' />
               </View>
               <View style={styles.boxName}>
                 <TouchableOpacity onPres={() =>  alert(this.props)}>
-                  <Text style={styles.textMenu}>News</Text>
+                  <Text style={{color: Colors.buttonLog,fontSize: Fonts.size.loginButton, fontFamily: Fonts.type.SPF, fontWeight: 'bold'}}>News</Text>
                 </TouchableOpacity>
               </View>
           </View>

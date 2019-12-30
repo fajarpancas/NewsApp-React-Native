@@ -22,7 +22,7 @@ export function * getToday (api) {
   const response = yield call(api.getToday)
 
   // success?
-  console.tron.log("tes : ",response)
+  // console.tron.log("tes : ",response)
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
@@ -40,7 +40,7 @@ export function * getBusinessToday (api) {
   const response = yield call(api.getBusinessToday)
 
   // success?
-  console.tron.log("tes : ",response)
+  // console.tron.log("tes : ",response)
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
@@ -58,7 +58,7 @@ export function * getTechToday (api) {
   const response = yield call(api.getTechToday)
 
   // success?
-  console.tron.log("tes : ",response)
+  // console.tron.log("tes : ",response)
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.
@@ -76,7 +76,7 @@ export function * getVideoToday (api) {
   const response = yield call(api.getVideoToday)
 
   // success?
-  console.tron.log("tes : ",response)
+  // console.tron.log("tes : ",response)
   if (response.ok) {
     // You might need to change the response here - do this with a 'transform',
     // located in ../Transforms/. Otherwise, just pass the data back from the api.

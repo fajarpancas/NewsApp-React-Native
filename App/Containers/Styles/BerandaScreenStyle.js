@@ -53,7 +53,7 @@ export default StyleSheet.create({
     marginLeft: 5,
     borderBottomWidth: 1,
     width: '100%',
-    paddingBottom: 20,
+    paddingBottom: 18,
     borderColor: 'lightgrey'
   },
   boxNameLogout: {
