@@ -18,6 +18,7 @@ import io.invertase.firebase.auth.RNFirebaseAuthPackage;
 import io.invertase.firebase.database.RNFirebaseDatabasePackage; // <-- Add this line
 import cl.json.RNSharePackage;
 import cl.json.ShareApplication;
+import co.apptailor.googlesignin.RNGoogleSigninPackage;
 
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class MainApplication extends Application implements ReactApplication {
         packages.add(new RNFirebaseDatabasePackage()); // <-- Add this line
         packages.add(new RNFirebaseAuthPackage());
         new RNSharePackage();
+        new RNGoogleSigninPackage();
         return packages;
       }
 
