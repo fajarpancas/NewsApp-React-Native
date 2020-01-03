@@ -189,7 +189,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-firebase')
     implementation 'androidx.appcompat:appcompat:1.1.0-rc01'
     implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0-alpha02'
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -197,10 +196,7 @@ dependencies {
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'com.android.support:multidex:1.0.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
-    implementation project(":react-native-google-signin")
-    implementation project(':react-native-share')
     // This should be here already
-    implementation project(':react-native-firebase')
 
     // Firebase dependencies
     implementation "com.google.android.gms:play-services-base:16.1.0"
