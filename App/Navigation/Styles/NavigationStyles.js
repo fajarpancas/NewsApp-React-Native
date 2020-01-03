@@ -6,6 +6,11 @@ export default StyleSheet.create({
   header: {
     backgroundColor: Colors.backgroundColor
   },
+  logoBlueLeft: {
+    width: Scale(104),
+    height: 26,
+    marginLeft: 15
+  },
   logoBlue: {
     width: Scale(104),
     height: 26,
@@ -13,6 +18,14 @@ export default StyleSheet.create({
     marginRight: 'auto',
   },
   menus: {
+    marginLeft: 'auto',
+    // marginRight: 15
+  },
+  cancel: {
+    width: 24,
+    height: 24
+  },
+  menu: {
     width: 24,
     height: 24,
     marginLeft: 15

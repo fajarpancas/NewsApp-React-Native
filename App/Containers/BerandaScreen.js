@@ -7,7 +7,7 @@ import TodayScreen from './TodayScreen'
 import RecommendedScreen from './RecommendedScreen';
 import TrendingScreen from './TrendingScreen';
 import ShopScreen from './ShopScreen';
-import { Images } from '../Themes'
+import { Images, Fonts } from '../Themes'
 import styles from './Styles/BerandaScreenStyle'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import SideMenuScreen from './SideMenuScreen'
@@ -32,11 +32,12 @@ tabBarOptions: {
   labelStyle: {
     fontSize: 14,
     color: 'grey',
-    fontFamily: 'Montserrat-Bold',
-    fontWeight: 'bold'
+    fontFamily: Fonts.type.montserrat,
+    // fontWeight: 'bold'
   },
   tabStyle: {
-    width: Scale(120),
+    width: 'auto',
+    height: 44
   },
   indicatorStyle: {
     borderBottomColor: '#21409A',
@@ -53,7 +54,10 @@ const MyDrawerNavigator = createDrawerNavigator({
   },
   {
     contentComponent: SideMenuScreen,
-    drawerWidth: Dimensions.get('window').width * 7/8
+    drawerWidth: Dimensions.get('window').width * 7/8,
+    navigationOptions: ({ navigation }) => ({
+      height: '100vh'
+    })
   }
 );
 

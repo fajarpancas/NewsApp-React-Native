@@ -72,13 +72,14 @@ export function * register(action) {
 
   const { data } = action
   const { email, password } = data
+  const success = "Sign Up Success"
   
   yield firebase.database().goOnline()
   try {
     const response = yield firebase.auth().createUserWithEmailAndPassword(email, password)
-    if (response && response.user.email == email) {
+    if (response) {
       // set actions when login success
-      alert(`Sign Up Success : ${JSON.stringify(response.user.uid)}`)
+      alert(`${success}`)
       yield put(LoginActions.signUpSuccess(response.data))
       NavigationService.navigate('Auth')
       }

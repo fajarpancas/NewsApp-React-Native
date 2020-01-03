@@ -44,7 +44,7 @@ class TodayScreen extends React.Component {
     // alert('get')
     const { getTopNews, getBusiness, getTech, getVideo } = this.props
     getTopNews()
-    getBusiness(),
+    getBusiness()
     getTech()
     getVideo()
   }
@@ -122,7 +122,11 @@ class TodayScreen extends React.Component {
     return (
       <View style={styles.containerVideo}>
         <Image source={{ uri: item.urlToImage }} style={styles.videoImage} />
-        <Text style={styles.titleVideo}>{item.title}</Text>
+        {item.title.length > 50 ?
+          <Text style={styles.titleVideo}>{item.title.slice(0, 50)}..</Text>
+          :
+          <Text style={styles.titleVideo}>{item.title} </Text>
+        }
       </View>
     )
   }
@@ -132,7 +136,11 @@ class TodayScreen extends React.Component {
       <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
           <View style={styles.boxTitleTopNews}>
-            <Text style={styles.title}>{item.title}</Text>
+            {item.title.length > 65 ?
+              <Text style={styles.title}>{item.title.slice(0, 65)}..</Text>
+              :
+              <Text style={styles.title}>{item.title} </Text>
+            }
           </View>
           <View style={styles.boxImageTopNews}>
             <Image source={{ uri: item.urlToImage }} style={styles.boxImageTopNews} />
@@ -157,7 +165,7 @@ class TodayScreen extends React.Component {
 
   render() {
     const { getTopNewsData, newList, getBusiness, businessList, getTech, techList, getVideoData, videoList } = this.props
-
+    const header = 'Top News'
     if (getTopNewsData.fetching === true) {
       return (
         <ActivityIndicator size="large" style={{ marginTop: 20 }}></ActivityIndicator>
@@ -166,12 +174,19 @@ class TodayScreen extends React.Component {
 
     if (getTopNewsData.fetching === false && getTopNewsData.error === true) {
       return (
-        <View><Text>Failure Get Data</Text></View>
+        <ScrollView refreshControl={this._renderRefreshControl()}>
+          <Text>Failure Get Data</Text>
+        </ScrollView>
       )
     }
 
     if (getTopNewsData.fetching === false && getTopNewsData.payload !== undefined && getBusiness !== undefined && getTech !== undefined && getVideoData !== undefined
       && this.state.isTop === false && this.state.isBusiness === false && this.state.isTech === false && this.state.isVideo === false && this.state.fetchingSeeAll === false) {
+      // if(newList && newList.length){
+      //   for( let i = 0; i < newList.length; i++){
+      //     newList[0]
+      //   }
+      // }
       return (
         <ScrollView refreshControl={this._renderRefreshControl()}>
           <View style={styles.wrapper}>
@@ -194,7 +209,6 @@ class TodayScreen extends React.Component {
                   <View><Text>Empty Data</Text></View>
                 )
               }}
-              // keyExtractor={(item, index) => index.toString()}
               keyExtractor={item => item.author}
             />
 
@@ -224,8 +238,6 @@ class TodayScreen extends React.Component {
                 )
               }}
               keyExtractor={item => item.author}
-
-            // keyExtractor={item => item.id}
             />
 
             <View style={styles.containerHead}>
@@ -248,8 +260,6 @@ class TodayScreen extends React.Component {
                 )
               }}
               keyExtractor={item => item.author}
-
-            // keyExtractor={item => item.id}
             />
 
             <View style={styles.contentAdvert}>
@@ -348,9 +358,6 @@ class TodayScreen extends React.Component {
                 )
               }}
               keyExtractor={item => item.author}
-
-            // keyExtractor={(item, index) => index.toString()}
-            // keyExtractor={item => item.id}
             />
           </View>
         </ScrollView>
@@ -381,9 +388,6 @@ class TodayScreen extends React.Component {
                 )
               }}
               keyExtractor={item => item.author}
-
-            // keyExtractor={(item, index) => index.toString()}
-            // keyExtractor={item => item.id}
             />
           </View>
         </ScrollView>
@@ -427,6 +431,7 @@ class TodayScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+  // alert(state.news.newsTopList)
   return {
     getTopNewsData: state.news.getTopNews,
     newList: state.news.newsTopList.articles,

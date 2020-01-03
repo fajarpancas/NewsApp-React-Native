@@ -15,7 +15,8 @@ const { Types, Creators } = createActions({
   getTechnoFailure: ['error'],
   getVideoRequest: null,
   getVideoSuccess: ['payload'],
-  getVideoFailure: ['error']
+  getVideoFailure: ['error'],
+  setHeader: ['payload']
 })
 
 export const TodayTypes = Types
@@ -37,7 +38,8 @@ export const INITIAL_STATE = Immutable({
   newsTopList: [],
   TechList: [],
   businessList: [],
-  videoList: []
+  videoList: [],
+  header: []
 })
 
 /* ------------- Selectors ------------- */
@@ -104,6 +106,10 @@ export const getVideoSuccess = (state, {payload}) => {
 export const getVideoFailure = (state) =>
   state.merge({ ...state, getTech : { fetching: false, error: true, payload: undefined } })
   
+export const setHeader = (state, {payload}) => {
+  return state.merge({...state, header: payload})
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
@@ -118,5 +124,6 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_TECHNO_FAILURE]: getTechnoFailure,
   [Types.GET_VIDEO_REQUEST]: getVideoRequest,
   [Types.GET_VIDEO_SUCCESS]: getVideoSuccess,
-  [Types.GET_VIDEO_FAILURE]: getVideoFailure
+  [Types.GET_VIDEO_FAILURE]: getVideoFailure,
+  [Types.SET_HEADER]: setHeader
 })

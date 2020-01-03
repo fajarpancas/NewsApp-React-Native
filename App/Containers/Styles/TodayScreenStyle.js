@@ -6,7 +6,7 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   topNewsTitle:{
     color: '#3F3F40',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     borderLeftWidth: 5,
     borderLeftColor: Colors.buttonLog,
     paddingLeft: 12,
@@ -15,11 +15,12 @@ export default StyleSheet.create({
     fontSize: Fonts.size.h7
   },
   seeAllText: {
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: Colors.buttonLog,
     fontSize: Fonts.size.loginButton,
     alignSelf: 'flex-end',
-    margin: 15
+    margin: 15,
+    fontFamily: Fonts.type.montserrat
   },
   wrapper: {
     flex: 1
@@ -53,7 +54,8 @@ export default StyleSheet.create({
     width: Scale(230),
     height: 72,
     marginLeft: 15,
-    marginRight: 5
+    marginRight: 5,
+    // marginBottom: 10
   },
   boxImageTopNews:{
     width: Scale(100),
@@ -62,16 +64,22 @@ export default StyleSheet.create({
     marginRight: 15,
     marginLeft: 5,
     resizeMode : 'stretch'
-  },  
+  },
   title: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: Fonts.size.regular
+    fontFamily: Fonts.type.montserratSemi,
+    fontSize: Fonts.size.regular,
+    lineHeight: 24
+  },
+  titleVideo: {
+    fontFamily: Fonts.type.montserratSemi,
+    fontSize: Fonts.size.small,
+    marginTop: '1.05%'
   },
   uploaded:{
     width: Scale(225),
     height: '100%',
     marginRight: 5,
-    marginTop: 5
+    marginTop: 5,
   },
   view:{
     width: Scale(55),
@@ -87,7 +95,9 @@ export default StyleSheet.create({
     flexDirection: 'row'
   },
   timeText:{
-    color: Colors.buttonLog
+    color: Colors.buttonLog,
+    fontFamily: Fonts.type.SPFReg,
+    fontSize: Fonts.size.small
   },
   contentAdvert:{
     backgroundColor: '#f0f0f0',
@@ -111,7 +121,9 @@ export default StyleSheet.create({
   },
   total: {
     marginTop: 5,
-    marginLeft: 5
+    marginLeft: 5,
+    fontFamily: Fonts.type.SPFReg,
+    fontSize: Fonts.size.small
   },
   advertise: {
     padding: 15,

@@ -26,7 +26,6 @@ export default StyleSheet.create({
   loginText: {
     fontFamily: Fonts.type.montserrat,
     fontSize: Fonts.size.input,
-    fontWeight: 'bold',
     marginLeft: 'auto',
     marginRight: 'auto',
     color: 'black',
@@ -46,32 +45,39 @@ export default StyleSheet.create({
     color: Colors.snow,
     marginLeft: 'auto',
     marginRight: 'auto',
-    lineHeight: 55,
-    fontFamily: Fonts.type.SPF,
-    fontWeight: 'bold',
+    lineHeight: 48,
+    alignItems: 'center',
+    fontFamily: Fonts.type.SPFBold,
     fontSize: Fonts.size.loginButton
   },
   forgotPass: {
     color: Colors.buttonLog,
+    fontFamily: Fonts.type.SPFReg,
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: '15%'
+    marginBottom: 20
   },
   textSignUpLink: {
     color: Colors.buttonLog,
     marginLeft: 'auto',
     marginRight: 'auto',
-    fontWeight: 'bold'
+    fontFamily: Fonts.type.SPFBold,
+    fontSize: Fonts.size.medium
+  },
+  textSignUp: {
+    fontFamily: Fonts.type.SPFMed,
+    fontSize: Fonts.size.medium
   },
   bottomView: {
     width: '100%',
+    flex: 1,
     height: 50,
     borderTopColor: '#dddddd',
     borderTopWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    top: Dimensions.get('window').height * 0.89,
+    top: Dimensions.get('window').height * 0.88,
     alignSelf: 'flex-end',
     color: 'black',
     fontFamily: Fonts.type.SPF,
@@ -87,8 +93,7 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     lineHeight: 30,
-    fontFamily: Fonts.type.SPF,
-    fontWeight: 'bold',
+    fontFamily: Fonts.type.SPFBold,
     fontSize: Fonts.size.loginButton
   },
   buttonGoogle: {
@@ -101,8 +106,7 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     lineHeight: 30,
-    fontWeight: 'bold',
-    fontFamily: Fonts.type.SPF,
+    fontFamily: Fonts.type.SPFBold,
     fontSize: Fonts.size.loginButton
   },
   SectionStyle: {
@@ -169,5 +173,7 @@ export default StyleSheet.create({
   },
   passInput: {
     flex: 1,
+    fontFamily: Fonts.type.SPFReg,
+    fontSize: Fonts.size.medium
   }
 })

@@ -2,8 +2,11 @@ const type = {
   base: 'Avenir-Book',
   bold: 'Avenir-Black',
   emphasis: 'HelveticaNeue-Italic',
+  montserratSemi: 'Montserrat-SemiBold',
   montserrat: 'Montserrat-Bold',
-  SPF: 'SFProText-Bold'
+  SPFReg: 'SF-Pro-Text-Regular',
+  SPFMed: 'SFProText-Medium',
+  SPFBold: 'SF-Pro-Text-Bold'
 }
 
 const size = {

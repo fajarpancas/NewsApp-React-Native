@@ -8,7 +8,7 @@ export default StyleSheet.create({
     width: Scale(104),
     height: 26,
     marginLeft: 'auto',
-    marginRight: 'auto',
+    marginRight: 'auto'
   },
   logoDrawer: {
     width: Scale(104),
@@ -19,7 +19,8 @@ export default StyleSheet.create({
   menus: {
     width: 24,
     height: 24,
-    marginLeft: 15
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   search: {
     marginRight: 15,
@@ -64,7 +65,7 @@ export default StyleSheet.create({
   },
   textMenu: {
     fontSize: Fonts.size.loginButton,
-    fontFamily: Fonts.type.SPF
+    fontFamily: Fonts.type.SPFMed
   },
   wrapper: {
     flex: 1

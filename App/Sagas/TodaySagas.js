@@ -85,3 +85,8 @@ export function * getVideoToday (api) {
     yield put(TodayActions.getVideoFailure())
   }
 }
+
+export function* setHeader(action) {
+  // yield put(SessionActions.removeSession());
+  // NavigationService.navigate('Auth')
+}

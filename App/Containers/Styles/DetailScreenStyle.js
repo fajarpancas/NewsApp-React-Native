@@ -6,7 +6,6 @@ export default StyleSheet.create({
   ...ApplicationStyles.screen,
   topNewsTitle:{
     color: '#3F3F40',
-    fontWeight: 'bold',
     borderLeftWidth: 5,
     borderLeftColor: Colors.buttonLog,
     paddingLeft: 12,
@@ -67,8 +66,9 @@ export default StyleSheet.create({
     resizeMode : 'stretch'
   },  
   title: {
-    fontFamily: Fonts.type.montserrat,
-    fontSize: Fonts.size.regular
+    fontFamily: Fonts.type.montserratSemi,
+    fontSize: Fonts.size.regular,
+    lineHeight: 24
   },
   uploaded:{
     width: Scale(225),
@@ -93,12 +93,15 @@ export default StyleSheet.create({
     marginLeft: 'auto',
     marginRight: 'auto',
     fontSize: Fonts.size.input,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   titleDetail:{
     fontSize: Fonts.size.h8,
-    margin: 15,
-    fontWeight: 'bold',
+    fontFamily: Fonts.type.montserrat,
+    lineHeight: 32,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 15,
     color: 'black'
   },
   detailImage: {
@@ -109,11 +112,24 @@ export default StyleSheet.create({
   contentDetail: {
     marginLeft: 15,
     marginRight: 15,
-    fontSize: Fonts.size.h9
+    fontSize: Fonts.size.h9,
+    fontFamily: Fonts.type.SPFReg,
+    lineHeight: 24
+    // letterSpacing : 0.2
+  },
+  contentDetailAuthor: {
+    marginLeft: 15,
+    marginRight: 15,
+    fontSize: Fonts.size.h9,
+    fontFamily: Fonts.type.SPFBold,
+    // letterSpacing : 0.2
+    lineHeight: 24
   },
   textShare: {
-    width: 60, 
+    fontFamily: Fonts.type.SPFReg,
+    width: 'auto', 
     marginLeft: 15, 
+    marginRight: 15, 
     marginBottom: 35, 
     marginTop: 10
   },
@@ -124,7 +140,9 @@ export default StyleSheet.create({
   },
   total: {
     marginTop: 5,
-    marginLeft: 5
+    marginLeft: 5,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.SPFReg,
   },
   shareIcon: {
     marginTop: 5,
@@ -145,7 +163,10 @@ export default StyleSheet.create({
     flexDirection: 'row'
   },
   timeText:{
-    color: Colors.buttonLog
+    color: Colors.buttonLog,
+    fontSize: Fonts.size.small,
+    fontFamily: Fonts.type.SPFReg,
+    color: '#999999'
   },
   arrowLeft: {
     width: 24,

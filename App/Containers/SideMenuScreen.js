@@ -56,7 +56,7 @@ class SideMenuScreen extends React.Component{
               </View>
               <View style={styles.boxName}>
                 <TouchableOpacity onPres={() =>  alert(this.props)}>
-                  <Text style={{color: Colors.buttonLog,fontSize: Fonts.size.loginButton, fontFamily: Fonts.type.SPF, fontWeight: 'bold'}}>News</Text>
+                  <Text style={{color: Colors.buttonLog,fontSize: Fonts.size.loginButton, fontFamily: Fonts.type.SPFMed}}>News</Text>
                 </TouchableOpacity>
               </View>
           </View>

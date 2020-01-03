@@ -9,7 +9,7 @@ import { ShareDialog } from 'react-native-fbsdk'
 import { connect } from 'react-redux'
 
 class DetailScreen extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.childDiv = React.createRef()
     this.state = {
@@ -17,19 +17,19 @@ class DetailScreen extends Component {
       fetching: false
     }
   }
-  
+
   shared = (data, sosmed) => {
-    if(sosmed == 'fb'){
+    if (sosmed == 'fb') {
       const shareOptions = {
         title: data.title,
         message: data.content,
         url: data.url,
         social: Share.Social.FACEBOOK,
-        filename: 'test' , // only for base64 file in Android 
+        filename: 'test', // only for base64 file in Android 
       };
       Share.shareSingle(shareOptions);
     }
-    else if(sosmed == 'tw'){
+    else if (sosmed == 'tw') {
       const shareOptions = {
         title: data.title,
         message: data.content,
@@ -38,30 +38,30 @@ class DetailScreen extends Component {
       };
       Share.shareSingle(shareOptions);
     }
-    else if(sosmed == 'wa'){
+    else if (sosmed == 'wa') {
       const shareOptions = {
         title: data.title,
         message: data.content,
         url: data.url,
         social: Share.Social.WHATSAPP,
         whatsAppNumber: "9199999999",  // country code + phone number(currently only works on Android)
-        filename: 'test' , // only for base64 file in Android 
+        filename: 'test', // only for base64 file in Android 
       };
       Share.shareSingle(shareOptions);
     }
-    else if(sosmed == 'em'){
+    else if (sosmed == 'em') {
       const shareOptions = {
         title: data.title,
         message: data.content,
         url: data.url,
         social: Share.Social.EMAIL,
         whatsAppNumber: "9199999999",  // country code + phone number(currently only works on Android)
-        filename: 'test' , // only for base64 file in Android 
+        filename: 'test', // only for base64 file in Android 
       };
       Share.shareSingle(shareOptions);
     }
   }
-    
+
   shareLinkWithShareDialog(description) {
     const shareLinkContent = {
       contentType: 'link',
@@ -70,13 +70,13 @@ class DetailScreen extends Component {
     };
     var tmp = this;
     ShareDialog.canShow(shareLinkContent).then(
-      function(canShow) {
+      function (canShow) {
         if (canShow) {
           return ShareDialog.show(shareLinkContent);
         }
       }
     ).then(
-      function(result) {
+      function (result) {
         if (result.isCancelled) {
           console.log('Share cancelled');
         } else {
@@ -84,7 +84,7 @@ class DetailScreen extends Component {
             + result.postId);
         }
       },
-      function(error) {
+      function (error) {
         console.log('Share fail with error: ' + error);
       }
     );
@@ -106,57 +106,64 @@ class DetailScreen extends Component {
     })
   }
 
-  renderItem = ({item}) => {
+  renderItem = ({ item }) => {
+    const date = new Date().toDateString()
+    const datePublish = new Date(item.publishedAt).toDateString()
     return (
       <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
-            <View style={styles.boxTitleTopNews}>
-              <Text style={styles.title}>{item.title}</Text>
-            </View>
-            <View style={styles.boxImageTopNews}>
-              <Image source={{uri: item.urlToImage}} style={styles.boxImageTopNews} />
-              {/* <Text style={styles.image}>{item.image}</Text> */}
-            </View>
+          <View style={styles.boxTitleTopNews}>
+            {item.title.length > 65 ?
+              <Text style={styles.title}>{item.title.slice(0, 65)}..</Text>
+              :
+              <Text style={styles.title}>{item.title} </Text>
+            }
           </View>
-          <View style={styles.container2}>
-            <View style={styles.uploaded}>
-              <Text style={styles.timeText}>{Moment(item.publishedAt).format('DD MMMM YYYY')}</Text>
-            </View>
-            <View style={styles.view}>
-              <Image source={Images.eye} style={styles.shareIcon} />
-              <Text style={styles.total}>125k</Text>
-            </View>
-            <View style={styles.shared}>
-              <Image source={Images.share} style={styles.shareIcon} />
-              <Text style={styles.total}>125k</Text>
-            </View>      
+          <View style={styles.boxImageTopNews}>
+            <Image source={{ uri: item.urlToImage }} style={styles.boxImageTopNews} />
+            {/* <Text style={styles.image}>{item.image}</Text> */}
           </View>
+        </View>
+        <View style={styles.container2}>
+          <View style={styles.uploaded}>
+            <Text style={styles.timeText}>{datePublish}</Text>
+            {/* <Text style={styles.timeText}>{date}</Text> */}
+          </View>
+          <View style={styles.view}>
+            <Image source={Images.eye} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
+          <View style={styles.shared}>
+            <Image source={Images.share} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
+        </View>
       </TouchableOpacity>
     )
   }
 
-  render () {
+  render() {
     const { data, seeAll } = this.state
     const { getTech, techList } = this.props
 
     return (
-      <ScrollView> 
+      <ScrollView>
         <Text style={styles.titleDetail}>{this.props.navigation.state.params.dataDetail.title}</Text>
         <View style={styles.container2}>
-            <View style={styles.uploaded}>
-              <Text style={styles.timeText}>{Moment(this.props.navigation.state.params.dataDetail.publishedAt).format('MMMM DD, YYYY')}</Text>
-            </View>
-            <View style={styles.view}>
-              <Image source={Images.eye} style={styles.shareIcon} />
-              <Text style={styles.total}>125k</Text>
-            </View>
-            <View style={styles.shared}>
-              <Image source={Images.share} style={styles.shareIcon} />
-              <Text style={styles.total}>125k</Text>
-            </View>
+          <View style={styles.uploaded}>
+            <Text style={styles.timeText}>{Moment(this.props.navigation.state.params.dataDetail.publishedAt).format('MMMM DD, YYYY')}</Text>
+          </View>
+          <View style={styles.view}>
+            <Image source={Images.eye} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
+          <View style={styles.shared}>
+            <Image source={Images.share} style={styles.shareIcon} />
+            <Text style={styles.total}>125k</Text>
+          </View>
         </View>
 
-        <View style={{flex: 1, flexDirection: 'row'}}>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
           <Text style={styles.textShare}>Share to : </Text>
           <TouchableOpacity onPress={() => this.shared(this.props.navigation.state.params.dataDetail, 'fb')}>
             <Image source={Images.facebook} style={styles.imageSosial} />
@@ -173,33 +180,35 @@ class DetailScreen extends Component {
         </View>
 
         {/* content */}
-        <Text style={styles.contentDetail}>{this.props.navigation.state.params.dataDetail.content}</Text>
-        <Image source={{uri: this.props.navigation.state.params.dataDetail.urlToImage}} style={styles.detailImage} />
-      
+        
+        <Text style={styles.contentDetailAuthor}>{this.props.navigation.state.params.dataDetail.author} -
+        <Text style={styles.contentDetail}> {this.props.navigation.state.params.dataDetail.content}</Text></Text>
+        <Image source={{ uri: this.props.navigation.state.params.dataDetail.urlToImage }} style={styles.detailImage} />
+
         <View style={styles.wrapper}>
           <View style={styles.containerHead}>
-              <View style={styles.boxTitle}>
-                <Text style={styles.topNewsTitle}>Recomemended News</Text>
-              </View>
-              <View style={styles.boxTitle2}>
-                <TouchableOpacity onPress={() => this.seeAll()}>
-                  <Text style={styles.seeAllText}>{seeAll ? 'See Less' : 'See all'}</Text>
-                </TouchableOpacity>
-              </View>
+            <View style={styles.boxTitle}>
+              <Text style={styles.topNewsTitle}>Recomemended News</Text>
+            </View>
+            <View style={styles.boxTitle2}>
+              <TouchableOpacity onPress={() => this.seeAll()}>
+                <Text style={styles.seeAllText}>{seeAll ? 'See Less' : 'See all'}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          
-          <FlatList
-              data={techList && techList.length && !seeAll ? techList.slice(0, 3) : techList}
-              renderItem={this.renderItem}
-              ListEmptyComponent={() => {
-                return (
-                  <View><Text>Empty Data</Text></View>
-                )
-              }}
-              // keyExtractor={item => item.id}
-              keyExtractor={item => item.author}
 
-            />
+          <FlatList
+            data={techList && techList.length && !seeAll ? techList.slice(0, 3) : techList}
+            renderItem={this.renderItem}
+            ListEmptyComponent={() => {
+              return (
+                <View><Text>Empty Data</Text></View>
+              )
+            }}
+            // keyExtractor={item => item.id}
+            keyExtractor={item => item.author}
+
+          />
         </View>
       </ScrollView>
     )
