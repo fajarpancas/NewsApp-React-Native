@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">VsIgnite</string>
+    <string name="app_name">NewsApp</string>
     <string name="facebook_app_id">2441640756059234</string>
     <string name="fb_login_protocol_scheme">fb2441640756059234</string>
 </resources>
