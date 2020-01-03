@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.6.2",
+    "@react-native-community/google-signin": "^3.0.4",
     "@react-native-community/netinfo": "^5.0.0",
     "@react-navigation/material-top-tabs": "^5.0.0-alpha.24",
     "@react-navigation/native": "^5.0.0-alpha.20",
@@ -52,6 +53,7 @@
     "react-native-iphone-x-helper": "^1.2.1",
     "react-native-reanimated": "^1.4.0",
     "react-native-screens": "1.0.0-alpha.23",
+    "react-native-share": "^2.0.0",
     "react-native-tab-view": "^2.11.0",
     "react-native-vector-icons": "^6.6.0",
     "react-navigation": "^4.0.10",
