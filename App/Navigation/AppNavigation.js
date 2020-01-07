@@ -2,11 +2,16 @@ import React from 'react'
 import { Text, Image, TouchableOpacity, View } from 'react-native'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import DetailScreen from '../Containers/DetailScreen'
+import DetailTopScreen from '../Containers/DetailTopScreen'
+import DetailBusinessScreen from '../Containers/DetailBusinessScreen'
+import DetailTechScreen from '../Containers/DetailTechScreen'
+import DetailVideoScreen from '../Containers/DetailVideoScreen'
 import RecommendedScreen from '../Containers/RecommendedScreen'
 import ShopScreen from '../Containers/ShopScreen'
 import TrendingScreen from '../Containers/TrendingScreen'
 import TodayScreen from '../Containers/TodayScreen'
 import BerandaScreen from '../Containers/BerandaScreen'
+
 import LoginScreen from '../Containers/LoginScreen'
 import { createStackNavigator } from 'react-navigation-stack';
 import LaunchScreen from '../Containers/LaunchScreen'
@@ -64,10 +69,18 @@ const MainStack = createStackNavigator(
     },
     DetailScreen: {
       screen: DetailScreen,
-      navigationOptions: ({ navigation }) => ({
-        headerRight: () => <Text></Text>,
-        headerTitle: () => <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontFamily: Fonts.type.SPFBold, fontSize: Fonts.size.input }}>Top News</Text>,
-      })
+    },
+    DetailTopScreen: {
+      screen: DetailTopScreen,
+    },
+    DetailBusinessScreen: {
+      screen: DetailBusinessScreen,
+    },
+    DetailVideoScreen: {
+      screen: DetailVideoScreen,
+    },
+    DetailTechScreen: {
+      screen: DetailTechScreen,
     },
     RecommendedScreen: { screen: RecommendedScreen },
     ShopScreen: { screen: ShopScreen },

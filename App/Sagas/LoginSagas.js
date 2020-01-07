@@ -45,9 +45,13 @@ export function * login(action) {
     const response = yield firebase.auth().signInWithEmailAndPassword(email, password)
     if (response && response.user.email == email) {
       // set actions when login success
-      // alert(JSON.stringify(response.user.uid))
-      yield put(SessionActions.saveUserAuth(response.data));
-      yield put(LoginActions.loginSuccess(response.data))
+      const dataLogin = {
+        loginType: 'firebase',
+        email: response.user.email,
+        uid: response.user.uid
+      }
+      yield put(SessionActions.saveUserAuth(dataLogin));
+      yield put(LoginActions.loginSuccess(dataLogin))
       NavigationService.navigate('Main')
       }
     }
@@ -66,6 +70,15 @@ export function * loginFacebook(action) {
     NavigationService.navigate('Main')
   }
   
+}
+
+export function * loginGoogle(action) {
+  const { data } = action
+  const { id } = data
+  if(id !== undefined){
+    yield put(SessionActions.saveUserAuth(data));
+    NavigationService.navigate('Main')
+  } 
 }
 
 export function * register(action) {

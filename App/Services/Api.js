@@ -17,7 +17,7 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
       'Cache-Control': 'no-cache'
     },
     // 10 second timeout...
-    timeout: 10000
+    timeout: 25000
   })
 
   // ------

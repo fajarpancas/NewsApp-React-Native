@@ -13,6 +13,9 @@ const { Types, Creators } = createActions({
   facebookLoginRequest: ['data'],
   facebookLoginSuccess: ['payload'],
   facebookLoginFailure: ['error'],
+  googleLoginRequest: ['data'],
+  googleLoginSuccess: ['payload'],
+  googleLoginFailure: ['error'],
   logout: ['callback']
 })
 
@@ -30,7 +33,8 @@ export const DEFAULT_STATE = {
 export const INITIAL_STATE = Immutable({
   login: DEFAULT_STATE,
   signUp: DEFAULT_STATE,
-  facebookLogin: DEFAULT_STATE
+  facebookLogin: DEFAULT_STATE,
+  googleLogin: DEFAULT_STATE
 })
 
 /* ------------- Selectors ------------- */
@@ -88,6 +92,21 @@ export const facebookLoginSuccess = (state, {payload}) => {
 export const facebookLoginFailure = state =>
   state.merge({ ...state, facebookLogin: {fetching: false, error: true, payload: null} })
 
+export const googleLoginRequest = (state, { data }) => {
+  // alert(JSON.stringify(data))
+  return state.merge({ ...state, googleLogin: {fetching: true, data, payload: null} })
+}
+
+// successful api lookup
+export const googleLoginSuccess = (state, {payload}) => {
+  // const { payload } = action
+  return state.merge({ ...state, googleLogin: {fetching: false, error: null, payload} })
+}
+
+// Something went wrong somewhere.
+export const googleLoginFailure = state =>
+  state.merge({ ...state, googleLogin: {fetching: false, error: true, payload: null} })
+
 export const logout = state => {
     return state.merge({ ...state, ...INITIAL_STATE });
   };
@@ -103,5 +122,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.FACEBOOK_LOGIN_REQUEST]: facebookLoginRequest,
   [Types.FACEBOOK_LOGIN_SUCCESS]: facebookLoginSuccess,
   [Types.FACEBOOK_LOGIN_FAILURE]: facebookLoginFailure,
+  [Types.GOOGLE_LOGIN_REQUEST]: googleLoginRequest,
+  [Types.GOOGLE_LOGIN_SUCCESS]: googleLoginSuccess,
+  [Types.GOOGLE_LOGIN_FAILURE]: googleLoginFailure,
   [Types.LOGOUT]: logout
 })

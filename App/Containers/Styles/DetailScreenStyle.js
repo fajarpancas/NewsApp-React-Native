@@ -14,11 +14,12 @@ export default StyleSheet.create({
     fontSize: Fonts.size.h7
   },
   seeAllText: {
-    fontWeight: 'bold',
     color: Colors.buttonLog,
     fontSize: Fonts.size.loginButton,
     alignSelf: 'flex-end',
-    margin: 15
+    marginRight: 15,
+    marginTop: 15,
+    fontFamily: Fonts.type.montserrat
   },
   wrapper: {
     flex: 1

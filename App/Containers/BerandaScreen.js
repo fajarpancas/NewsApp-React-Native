@@ -23,38 +23,38 @@ const TabNavigator = createMaterialTopTabNavigator({
   Shoping: ShopScreen,
   Recommended: RecommendedScreen,
 },
-{
-initialRouteName: 'Today',
-tabBarOptions: {
-  upperCaseLabel: false,
-  activeTintColor : '#cd077d',
-  scrollEnabled: true,
-  labelStyle: {
-    fontSize: 14,
-    color: 'grey',
-    fontFamily: Fonts.type.montserrat,
-    // fontWeight: 'bold'
-  },
-  tabStyle: {
-    width: 'auto',
-    height: 44
-  },
-  indicatorStyle: {
-    borderBottomColor: '#21409A',
-    borderBottomWidth: 2
-  },
-  style: {
-    backgroundColor: '#F9F9F8'
-  }
-}
-});
+  {
+    initialRouteName: 'Today',
+    tabBarOptions: {
+      upperCaseLabel: false,
+      activeTintColor: '#cd077d',
+      scrollEnabled: true,
+      labelStyle: {
+        fontSize: 14,
+        color: 'grey',
+        fontFamily: Fonts.type.montserrat,
+        // fontWeight: 'bold'
+      },
+      tabStyle: {
+        width: 'auto',
+        height: 44
+      },
+      indicatorStyle: {
+        borderBottomColor: '#21409A',
+        borderBottomWidth: 2
+      },
+      style: {
+        backgroundColor: '#F9F9F8'
+      }
+    }
+  });
 
 const MyDrawerNavigator = createDrawerNavigator({
-    defaulthome: TabNavigator
-  },
+  defaulthome: TabNavigator
+},
   {
     contentComponent: SideMenuScreen,
-    drawerWidth: Dimensions.get('window').width * 7/8,
+    drawerWidth: Dimensions.get('window').width * 7 / 8,
     navigationOptions: ({ navigation }) => ({
       height: '100vh'
     })

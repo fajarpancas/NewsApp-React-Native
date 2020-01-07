@@ -76,7 +76,7 @@ export default StyleSheet.create({
     marginTop: '1.05%'
   },
   uploaded:{
-    width: Scale(225),
+    width: Scale(235),
     height: '100%',
     marginRight: 5,
     marginTop: 5,

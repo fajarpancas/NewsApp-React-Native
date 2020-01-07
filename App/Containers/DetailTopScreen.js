@@ -12,7 +12,9 @@ import PropTypes from 'prop-types'
 
 class DetailScreen extends Component {
   static propTypes = {
-    getTech: PropTypes.func
+    getTech: PropTypes.func,
+    setHeader: PropTypes.func
+
   }
 
   constructor(props) {
@@ -23,18 +25,11 @@ class DetailScreen extends Component {
       fetching: false
     }
   }
-
-  componentDidMount(){
-    alert('a')
-    // this.navigation.setParams({
-    //   detail: this.props
-    //  })
-  }
   
   static navigationOptions = ({ navigation }) => ({
-    headerRight: () => <TouchableOpacity onPress={() => alert(JSON.stringify(this.props))}><Text>adaaa</Text></TouchableOpacity>,
+    headerRight: () => <Text></Text>,
     headerTitle: () => <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontFamily: Fonts.type.SPFBold, fontSize: Fonts.size.input }}>
-      {}</Text>,
+      Top News</Text>,
   })
 
   shared = (data, sosmed) => {
@@ -121,9 +116,11 @@ class DetailScreen extends Component {
   }
 
   detail = (item) => {
-    this.props.navigation.navigate('DetailScreen', {
-      dataDetail: item
-    })
+    // this.props.navigation.navigate('DetailScreen', {
+    //   dataDetail: item
+    // })
+    this.props.setHeader(item)
+
   }
 
   renderItem = ({ item }) => {
@@ -164,7 +161,7 @@ class DetailScreen extends Component {
 
   render() {
     const { data, seeAll } = this.state
-    const { getTech, techList, detail } = this.props
+    const { getTech, techList, detail, dataDetail } = this.props
 
     return (
       <ScrollView>
@@ -238,15 +235,17 @@ class DetailScreen extends Component {
 const mapStateToProps = (state) => {
   // alert(JSON.stringify(state.news.header))
   return {
-    getTechno: state.news.getTech,
-    techList: state.news.TechList.articles,
-    detail: state.news.header
+    getTechno: state.news.getVideo,
+    techList: state.news.videoList,
+    detail: state.news.header,
+    dataDetail: state.news.getHeader
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     getTech: () => dispatch(TodayData.getTechnoRequest()),
+    setHeader: data => dispatch(TodayData.setHeader(data))
   }
 }
 

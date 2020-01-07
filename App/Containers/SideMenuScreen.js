@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import styles from './Styles/BerandaScreenStyle'
 import LoginData from '../Redux/LoginRedux'
 import { Images, Colors, Fonts } from '../Themes'
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 
 class SideMenuScreen extends React.Component{
   static propTypes = {
@@ -22,6 +23,29 @@ class SideMenuScreen extends React.Component{
   // alert(JSON.stringify(this.props.login))
   }
 
+  componentDidMount() {
+    GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+      //available
+    }).catch((err) => {
+      console.log(error)
+    })
+
+    GoogleSignin.configure({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '901376282040-f4f9hilrvn095iptekdivn6em1bla7eh.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      })
+  }
+
+  signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      this.props.logout()
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   logout = () => {
     Alert.alert(
       'Confirm Alert',
@@ -32,7 +56,14 @@ class SideMenuScreen extends React.Component{
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'OK', onPress: () => this.props.logout()},
+        {text: 'OK', onPress: () => {
+          if(this.props.loginType.user.data.loginType === 'google'){
+            this.signOut();
+          }else{
+            this.props.logout()
+          }
+          },
+        }
       ],
       {cancelable: false},
     );
@@ -149,6 +180,7 @@ class SideMenuScreen extends React.Component{
 
 const mapStateToProps = (state) => {
   return {
+    loginType: state.session
   }
 }
 

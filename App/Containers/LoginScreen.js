@@ -17,14 +17,16 @@ import {
   GraphRequestManager,
   LoginManager,
 } from 'react-native-fbsdk';
+import { GoogleSignin, statusCodes } from '@react-native-community/google-signin';
 // import { GoogleSignin, statusCodes, GoogleSigninButton  } from '@react-native-community/google-signin';
-// import firebase from 'react-native-firebase'
+import firebase from 'react-native-firebase'
 
 class LoginScreen extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
     postLogin: PropTypes.func,
     fbLogin: PropTypes.func,
+    googleLogin : PropTypes.func,
     register: PropTypes.func
   }
 
@@ -56,6 +58,23 @@ class LoginScreen extends Component {
       password: '',
       userId: '',
       confirmPass: ''
+    })
+
+    GoogleSignin.hasPlayServices({ autoResolve: true }).then(() => {
+      //available
+    }).catch((err) => {
+      console.log(error)
+    })
+
+    GoogleSignin.configure({
+      scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
+      webClientId: '901376282040-f4f9hilrvn095iptekdivn6em1bla7eh.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+      // hostedDomain: '', // specifies a hosted domain restriction
+      // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
+      // forceConsentPrompt: true, // [Android] if you want to show the authorization prompt at each login.
+      // accountName: '', // [Android] specifies an account name on the device that should be used
+      // iosClientId: '<FROM DEVELOPER CONSOLE>', // [iOS] optional, if you want to specify the client ID of type iOS (otherwise, it is taken from GoogleService-Info.plist)
     })
   }
 
@@ -134,23 +153,43 @@ class LoginScreen extends Component {
   }
 
   signIn = async () => {
-    alert('On Progress')
-    // try {
-    //   // add any configuration settings here:
-    //   await GoogleSignin.configure();
+    try {
+      // await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      // alert(JSON.stringify(userInfo.user.id))
+      // this.setState({ userInfo });
+      const data = {
+        loginType: 'google',
+        email: userInfo.user.email,
+        id: userInfo.user.id
+      } 
+      this.props.googleLogin(data)
+    } catch (error) {
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('a')
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+        alert('b')
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('c')
+        // play services not available or outdated
+      } else {
+        alert(error)
 
-    //   const data = await GoogleSignin.signIn();
+        // some other error happened
+      }
+    }
+  };
 
-    //   // create a new firebase credential with the token
-    //   const credential = firebase.auth.GoogleAuthProvider.credential(data.idToken, data.accessToken)
-    //   // login with credential
-    //   const firebaseUserCredential = await firebase.auth().signInWithCredential(credential);
-    //   alert(`token : ${JSON.stringify(firebaseUserCredential)}`)
-    //   console.log(JSON.stringify(firebaseUserCredential.user.toJSON()));
-    // } catch (e) {
-    //   console.log("cancel");
-    //   console.log(data)
-    // }
+  signOut = async () => {
+    try {
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      this.setState({ user: null }); // Remember to remove the user from your app's state as well
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   facebookCallback = (error, result) => {
@@ -159,6 +198,7 @@ class LoginScreen extends Component {
     } else {
       let data = {
         // omniauth: {
+        loginType: 'facebook',
         email: result.email,
         name: result.name,
         token: this.state.accessToken,
@@ -409,7 +449,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     register: data => dispatch(LoginData.signUpRequest(data)),
     postLogin: data => dispatch(LoginData.loginRequest(data)),
-    fbLogin: data => dispatch(LoginData.facebookLoginRequest(data))
+    fbLogin: data => dispatch(LoginData.facebookLoginRequest(data)),
+    googleLogin: data => dispatch(LoginData.googleLoginRequest(data))
   }
 }
 

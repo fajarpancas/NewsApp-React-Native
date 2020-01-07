@@ -2,4 +2,5 @@
     <string name="app_name">NewsApp</string>
     <string name="facebook_app_id">2441640756059234</string>
     <string name="fb_login_protocol_scheme">fb2441640756059234</string>
+    <string name="server_client_id">901376282040-f4f9hilrvn095iptekdivn6em1bla7eh.apps.googleusercontent.com</string>
 </resources>

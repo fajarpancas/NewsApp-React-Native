@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment, useEffect } from 'react'
 import {
   ScrollView,
   Text,
@@ -13,6 +13,8 @@ import { connect } from 'react-redux'
 import TodayData from '../Redux/TodayRedux'
 import PropTypes from 'prop-types'
 import Moment from 'moment'
+import firebase from 'react-native-firebase'
+import type { Notification, NotificationOpen } from 'react-native-firebase'
 
 // Styles
 import styles from './Styles/TodayScreenStyle'
@@ -24,7 +26,8 @@ class TodayScreen extends React.Component {
     getTopNews: PropTypes.func,
     getBusiness: PropTypes.func,
     getTech: PropTypes.func,
-    getVideo: PropTypes.func
+    getVideo: PropTypes.func,
+    setHeader: PropTypes.func
   }
 
   constructor(props) {
@@ -42,17 +45,87 @@ class TodayScreen extends React.Component {
 
   componentDidMount() {
     // alert('get')
+    this.checkPermission();
     const { getTopNews, getBusiness, getTech, getVideo } = this.props
     getTopNews()
     getBusiness()
     getTech()
     getVideo()
+    this.removeNotificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+      // Get the action triggered by the notification being opened
+      const action = notificationOpen.action;
+      // Get information about the notification that was opened
+      const notification: Notification = notificationOpen.notification;
+    });
+  }
+
+  getFcmToken = async () => {
+    const fcmToken = await firebase.messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+      this.showAlert('Your Firebase Token is:', fcmToken);
+    } else {
+      this.showAlert('Failed', 'No token received');
+    }
+  }
+
+  requestPermission = async () => {
+    try {
+      await firebase.messaging().requestPermission();
+      // User has authorised
+    } catch (error) {
+      // User has rejected permissions
+    }
+  }
+
+  messageListener = async () => {
+    this.notificationListener = firebase.notifications().onNotification((notification) => {
+      const { title, body } = notification;
+      this.showAlert(title, body);
+    });
+
+    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+      const { title, body } = notificationOpen.notification;
+      this.showAlert(title, body);
+    });
+
+    const notificationOpen = await firebase.notifications().getInitialNotification();
+    if (notificationOpen) {
+      const { title, body } = notificationOpen.notification;
+      this.showAlert(title, body);
+    }
+
+    this.messageListener = firebase.messaging().onMessage((message) => {
+      console.log(JSON.stringify(message));
+    });
+  }
+
+  showAlert = (title, message) => {
+    Alert.alert(
+      title,
+      message,
+      [
+        { text: 'OK', onPress: () => console.log('OK Pressed') },
+      ],
+      { cancelable: false },
+    );
+  }
+
+  checkPermission = async () => {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+      this.getFcmToken();
+    } else {
+      this.requestPermission();
+    }
   }
 
   detail = (item) => {
-    this.props.navigation.navigate('DetailScreen', {
-      dataDetail: item
-    })
+    // alert(item)
+    this.props.setHeader(item)
+    // this.props.navigation.navigate('DetailScreen', {
+    //   dataDetail: item
+    // })
   }
 
   _onRefresh = () => {
@@ -122,7 +195,7 @@ class TodayScreen extends React.Component {
     return (
       <View style={styles.containerVideo}>
         <Image source={{ uri: item.urlToImage }} style={styles.videoImage} />
-        {item.title.length > 50 ?
+        {item.title && item.title.length > 50 ?
           <Text style={styles.titleVideo}>{item.title.slice(0, 50)}..</Text>
           :
           <Text style={styles.titleVideo}>{item.title} </Text>
@@ -136,8 +209,8 @@ class TodayScreen extends React.Component {
       <TouchableOpacity onPress={() => this.detail(item)}>
         <View style={styles.container}>
           <View style={styles.boxTitleTopNews}>
-            {item.title.length > 65 ?
-              <Text style={styles.title}>{item.title.slice(0, 65)}..</Text>
+            {item.title && item.title.length > 55 ?
+              <Text style={styles.title}>{item.title.slice(0, 55)}..</Text>
               :
               <Text style={styles.title}>{item.title} </Text>
             }
@@ -152,20 +225,27 @@ class TodayScreen extends React.Component {
           </View>
           <View style={styles.view}>
             <Image source={Images.eye} style={styles.shareIcon} />
-            <Text style={styles.total}>125k</Text>
+            <Text style={styles.total}>{item.viewCount}</Text>
           </View>
           <View style={styles.shared}>
             <Image source={Images.share} style={styles.shareIcon} />
-            <Text style={styles.total}>125k</Text>
+            <Text style={styles.total}>{item.shareCount}</Text>
           </View>
         </View>
       </TouchableOpacity>
     )
   }
 
+  renderLoading = () => {
+    // if (this.props.fetching) {
+      return <ActivityIndicator />
+    // }
+    // return null
+  }
+
   render() {
     const { getTopNewsData, newList, getBusiness, businessList, getTech, techList, getVideoData, videoList } = this.props
-    const header = 'Top News'
+
     if (getTopNewsData.fetching === true) {
       return (
         <ActivityIndicator size="large" style={{ marginTop: 20 }}></ActivityIndicator>
@@ -303,7 +383,7 @@ class TodayScreen extends React.Component {
 
     if (newList && this.state.isTop === true) {
       return (
-        <ScrollView refreshControl={this._renderRefreshControl()}>
+        <View style={{ flex: 1 }}>
           <View style={styles.wrapper}>
             <View style={styles.containerHead}>
               <View style={styles.boxTitle}>
@@ -318,7 +398,7 @@ class TodayScreen extends React.Component {
 
             <FlatList
               data={newList}
-              renderItem={this.renderItem}
+              renderItem={this.renderItem.bind(this)}
               ListEmptyComponent={() => {
                 return (
                   <View><Text>Empty Data</Text></View>
@@ -327,10 +407,13 @@ class TodayScreen extends React.Component {
               // keyExtractor={(item, index) => index.toString()}
               // keyExtractor={item => item.id}
               keyExtractor={item => item.author}
+              ListFooterComponent={this.renderLoading}
+              onEndReachedThreshold={0.5}
+              onEndReached={(distance) => console.log(distance)}
 
             />
           </View>
-        </ScrollView>
+        </View>
       )
     }
 
@@ -431,16 +514,16 @@ class TodayScreen extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  // alert(state.news.newsTopList)
+  console.log(JSON.stringify(state.session.newsTop))
   return {
     getTopNewsData: state.news.getTopNews,
-    newList: state.news.newsTopList.articles,
+    newList: state.news.newsTopList,
     getBusinessData: state.news.getBusiness,
-    businessList: state.news.businessList.articles,
+    businessList: state.news.businessList,
     getTechno: state.news.getTech,
-    techList: state.news.TechList.articles,
+    techList: state.news.videoList,
     getVideoData: state.news.getVideo,
-    videoList: state.news.videoList.articles
+    videoList: state.news.videoList,
   }
 }
 
@@ -449,7 +532,8 @@ const mapDispatchToProps = (dispatch) => {
     getTopNews: () => dispatch(TodayData.getTopRequest()),
     getBusiness: () => dispatch(TodayData.getBusinessRequest()),
     getTech: () => dispatch(TodayData.getTechnoRequest()),
-    getVideo: () => dispatch(TodayData.getVideoRequest())
+    getVideo: () => dispatch(TodayData.getVideoRequest()),
+    setHeader: data => dispatch(TodayData.setHeader(data))
   }
 }
 
