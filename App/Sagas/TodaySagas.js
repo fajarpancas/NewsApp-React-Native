@@ -92,6 +92,18 @@ export function * getVideoToday (api) {
   }
 }
 
+export function* getListSaga(api, action) {
+  // alert(JSON.stringify(action))
+  const { page } = action.data
+  const response = yield call(api.getList, { page })
+
+  if (response.ok) {
+    yield put(TodayActions.getListSuccess(response.data))
+  } else {
+    yield put(TodayActions.getListFailure())
+  }
+}
+
 export function * setHeader(action) {
   const { payload } = action
   const data = yield select(TodaySelectors.getData)

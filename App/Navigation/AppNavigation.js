@@ -11,6 +11,7 @@ import ShopScreen from '../Containers/ShopScreen'
 import TrendingScreen from '../Containers/TrendingScreen'
 import TodayScreen from '../Containers/TodayScreen'
 import BerandaScreen from '../Containers/BerandaScreen'
+import LoadMoreNewsScreen from '../Containers/LoadMoreNewsScreen'
 
 import LoginScreen from '../Containers/LoginScreen'
 import { createStackNavigator } from 'react-navigation-stack';
@@ -67,8 +68,8 @@ const MainStack = createStackNavigator(
         },
       })
     },
-    DetailScreen: {
-      screen: DetailScreen,
+    LoadMoreNewsScreen: {
+      screen: LoadMoreNewsScreen,
     },
     DetailTopScreen: {
       screen: DetailTopScreen,

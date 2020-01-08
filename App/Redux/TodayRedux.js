@@ -1,9 +1,13 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+// import mergeAndReplace from '../Transforms/Array'
 
 /* ------------- Types and Action Creators ------------- */
 
 const { Types, Creators } = createActions({
+  getListRequest: ['data'],
+  getListSuccess: ['payload'],
+  getListFailure: ['error'],
   getTopRequest: null,
   getTopSuccess: ['payload'],
   getTopFailure: ['error'],
@@ -21,8 +25,6 @@ const { Types, Creators } = createActions({
   setViewDataBusiness: ['payload'],
   setViewDataTechnology: ['payload'],
   setViewDataVideo: ['payload']
-
-
 })
 
 export const TodayTypes = Types
@@ -45,8 +47,10 @@ export const INITIAL_STATE = Immutable({
   TechList: [],
   businessList: [],
   videoList: [],
-  header: DEFAULT_STATE
-  
+  header: DEFAULT_STATE,
+  getList: DEFAULT_STATE,
+  list: []
+
 })
 
 /* ------------- Selectors ------------- */
@@ -120,6 +124,29 @@ export const getVideoSuccess = (state, { payload }) => {
 // Something went wrong somewhere.
 export const getVideoFailure = (state) =>
   state.merge({ ...state, getVideo: { fetching: false, error: true, payload: undefined } })
+
+export const getListRequest = (state, { data }) => {
+  console.tron.log('reset : ', data.reset)
+  if(data.reset === true){
+    return state.merge({ ...state, getList: { fetching: true, data, error: undefined }, list: [] })
+    // state.list = []
+  }else{
+    return state.merge({ ...state, getList: { fetching: true, data, error: undefined } })
+  }
+}
+
+export const getListSuccess = (state, { payload }) => {
+  // alert(JSON.stringify(payload.articles))
+  let newList = [...state.list]
+  let temp = newList.concat(payload.articles)
+  // newList = mergeAndReplace(newList, payload.articles)
+  console.tron.log(JSON.stringify(`length data :  ${temp.length}`))
+  return state.merge({ ...state, getList: { fetching: false, error: undefined, payload }, list: temp })
+}
+
+export const getListFailure = (state) => {
+  return state.merge({ ...state, getList: { ...state.gerList, fetching: false, error: true, payload: undefined } })
+}
 
 export const setHeader = (state, { payload }) => {
   // alert(`hey: ${payload}`)
@@ -332,6 +359,9 @@ export const setViewDataVideo = (state, { payload }) => {
 /* ------------- Hookup Reducers To Types ------------- */
 
 export const reducer = createReducer(INITIAL_STATE, {
+  [Types.GET_LIST_REQUEST]: getListRequest,
+  [Types.GET_LIST_SUCCESS]: getListSuccess,
+  [Types.GET_LIST_FAILURE]: getListFailure,
   [Types.GET_TOP_REQUEST]: getTopRequest,
   [Types.GET_TOP_SUCCESS]: getTopSuccess,
   [Types.GET_TOP_FAILURE]: getTopFailure,

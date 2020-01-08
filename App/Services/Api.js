@@ -38,6 +38,7 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
   const getToday = () => api.get('top-headlines?sources=techcrunch&apiKey=e457e5324b9449d4b60702270195720e')
+  const getList = (params) => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e', params)
   const getBusinessToday = () => api.get('top-headlines?country=us&category=business&apiKey=e457e5324b9449d4b60702270195720e')
   const getTechToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
   const getVideoToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
@@ -60,6 +61,7 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
     getRate,
     getUser,
     getToday,
+    getList,
     getBusinessToday,
     getTechToday,
     getVideoToday

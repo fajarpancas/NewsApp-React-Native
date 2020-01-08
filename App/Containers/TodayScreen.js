@@ -153,18 +153,19 @@ class TodayScreen extends React.Component {
   }
 
   seeAll = (type) => {
-    if (type === 'top') {
-      this.setState({ isTop: true })
-    }
-    if (type === 'business') {
-      this.setState({ isBusiness: true })
-    }
-    if (type === 'tech') {
-      this.setState({ isTech: true })
-    }
-    if (type === 'video') {
-      this.setState({ isVideo: true })
-    }
+    this.props.navigation.navigate('LoadMoreNewsScreen')
+    // if (type === 'top') {
+    //   this.setState({ isTop: true })
+    // }
+    // if (type === 'business') {
+    //   this.setState({ isBusiness: true })
+    // }
+    // if (type === 'tech') {
+    //   this.setState({ isTech: true })
+    // }
+    // if (type === 'video') {
+    //   this.setState({ isVideo: true })
+    // }
   }
 
   seeLess = (type) => {

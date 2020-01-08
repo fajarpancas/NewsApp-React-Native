@@ -24,10 +24,12 @@ class LaunchScreen extends Component {
   
   render () {
     return (
-      <TouchableOpacity onPress={this.toLogin}>
-        <Image source={Images.bgnews} style={styles.backgroundImage} resizeMode='stretch' />
+      <View style={{flex: 1}}>
+      
+        <Image source={Images.bgnews} style={styles.backgroundImage} 
+        resizeMode='stretch' />
         
-      </TouchableOpacity>
+      </View>
     )
   }
 }
