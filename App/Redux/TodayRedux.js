@@ -45,7 +45,7 @@ export const INITIAL_STATE = Immutable({
   getTech: DEFAULT_STATE,
   getVideo: DEFAULT_STATE,
   newsTopList: [],
-  TechList: [],
+  techList: [],
   businessList: [],
   videoList: [],
   header: DEFAULT_STATE,
@@ -102,7 +102,7 @@ export const getTechnoRequest = state =>
 export const getTechnoSuccess = (state, { payload }) => {
   // const { data } = action
   const parseTechnoList = payload.articles.map((item) => { return { ...item, newsType: 'Technology', viewCount: 10, shareCount: 0 } })
-  return state.merge({ ...state, getTech: { fetching: false, error: undefined, payload }, TechList: parseTechnoList })
+  return state.merge({ ...state, getTech: { fetching: false, error: undefined, payload }, techList: parseTechnoList })
 }
 
 // Something went wrong somewhere.
@@ -262,49 +262,49 @@ export const setViewDataBusiness = (state, { payload }) => {
 
 export const setViewDataTechnology = (state, { payload }) => {
   const tempData = [];
-  console.log(state.TechList.length)
-  for (let i = 0; i < state.TechList.length; i++) {
-    console.log(state.TechList[i].title.length, "aaaa : ", payload.title.length)
-    if (state.TechList[i].title.length === payload.title.length) {
+  console.log(state.techList.length)
+  for (let i = 0; i < state.techList.length; i++) {
+    console.log(state.techList[i].title.length, "aaaa : ", payload.title.length)
+    if (state.techList[i].title.length === payload.title.length) {
       console.log("true", i)
       tempData.push({
         source: {
-          id: state.TechList[i].id,
-          name: state.TechList[i].name
+          id: state.techList[i].id,
+          name: state.techList[i].name
         },
-        author: state.TechList[i].author,
-        title: state.TechList[i].title,
-        description: state.TechList[i].description,
-        url: state.TechList[i].url,
-        urlToImage: state.TechList[i].urlToImage,
-        publishedAt: state.TechList[i].publishedAt,
-        content: state.TechList[i].content,
-        newsType: state.TechList[i].newsType,
-        viewCount: state.TechList[i].viewCount + 1,
-        shareCount: state.TechList[i].shareCount
+        author: state.techList[i].author,
+        title: state.techList[i].title,
+        description: state.techList[i].description,
+        url: state.techList[i].url,
+        urlToImage: state.techList[i].urlToImage,
+        publishedAt: state.techList[i].publishedAt,
+        content: state.techList[i].content,
+        newsType: state.techList[i].newsType,
+        viewCount: state.techList[i].viewCount + 1,
+        shareCount: state.techList[i].shareCount
       });
     } else {
       console.log("false", i)
 
       tempData.push({
         source: {
-          id: state.TechList[i].id,
-          name: state.TechList[i].name
+          id: state.techList[i].id,
+          name: state.techList[i].name
         },
-        author: state.TechList[i].author,
-        title: state.TechList[i].title,
-        description: state.TechList[i].description,
-        url: state.TechList[i].url,
-        urlToImage: state.TechList[i].urlToImage,
-        publishedAt: state.TechList[i].publishedAt,
-        content: state.TechList[i].content,
-        newsType: state.TechList[i].newsType,
-        viewCount: state.TechList[i].viewCount,
-        shareCount: state.TechList[i].shareCount
+        author: state.techList[i].author,
+        title: state.techList[i].title,
+        description: state.techList[i].description,
+        url: state.techList[i].url,
+        urlToImage: state.techList[i].urlToImage,
+        publishedAt: state.techList[i].publishedAt,
+        content: state.techList[i].content,
+        newsType: state.techList[i].newsType,
+        viewCount: state.techList[i].viewCount,
+        shareCount: state.techList[i].shareCount
       });
     }
   }
-  return state.merge({ ...state, getTech: { fetching: false, error: undefined, payload }, TechList: tempData })
+  return state.merge({ ...state, getTech: { fetching: false, error: undefined, payload }, techList: tempData })
 }
 
 export const setViewDataVideo = (state, { payload }) => {
