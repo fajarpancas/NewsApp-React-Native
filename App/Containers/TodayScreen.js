@@ -239,7 +239,7 @@ class TodayScreen extends React.Component {
     }
 
     if (error) {
-      renderContent = this.errorContent
+      renderContent = this.errorContent()
     }
 
     return (
@@ -285,7 +285,7 @@ class TodayScreen extends React.Component {
     }
 
     if (error) {
-      renderContent = this.errorContent
+      renderContent = this.errorContent()
     }
 
     return (
@@ -326,7 +326,7 @@ class TodayScreen extends React.Component {
     }
 
     if (error) {
-      renderContent = this.errorContent
+      renderContent = this.errorContent()
     }
 
     return (
@@ -371,7 +371,7 @@ class TodayScreen extends React.Component {
     }
 
     if (error) {
-      renderContent = this.errorContent
+      renderContent = this.errorContent()
     }
 
     return (

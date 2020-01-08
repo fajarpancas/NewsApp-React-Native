@@ -1,5 +1,6 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import { Alert } from 'react-native'
 
 // our "constructor"
 const create = (baseURL = 'https://newsapi.org/v2/') => {
@@ -21,6 +22,27 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
     timeout: 25000
   })
 
+  let showErrorAler = false
+
+  api.addMonitor(response => {
+    const { status, config, data } = response
+    if (status.toString().charAt(0) !== '2') {
+      const { message } = data
+      if (!showErrorAler) {
+        showErrorAler = true
+
+        Alert.alert(
+          'Error',
+          message,
+          [
+            { text: 'OK', onPress: () => { showErrorAler = false } },
+          ],
+          { cancelable: false }
+        )
+      }
+    }
+  })
+
   // ------
   // STEP 2
   // ------
@@ -37,7 +59,7 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   //
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
+  const getUser = (username) => api.get('search/users', { q: username })
   const getToday = () => api.get('top-headlines?sources=techcrunch')
   const getList = (params) => api.get('everything?domains=wsj.com', params)
   const getBusinessToday = () => api.get('top-headlines?country=us&category=business')
