@@ -23,7 +23,7 @@ class LoadMoreNewsScreen extends Component {
     this.renderItem = this.renderItem.bind(this)
     this.fetchFunction = this.fetchFunction.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
-    this.onLoadMore = _.debounce(this.onLoadMore.bind(this), 5000)
+    this.onLoadMore = this.onLoadMore.bind(this)
   }
 
   componentDidMount() {
@@ -44,8 +44,18 @@ class LoadMoreNewsScreen extends Component {
   }
 
   onLoadMore() {
-    this.page = this.page + 1
-    this.fetchFunction(this.page, false)
+    const { list, getListStatus } = this.props
+    const { fetching, payload, error } = getListStatus
+
+    if (!fetching && payload) {
+      const { totalResults } = payload
+      if (list.length < totalResults) {
+        if (error !== true) {
+          this.page = this.page + 1
+        }
+        this.fetchFunction(this.page, false)
+      }
+    }
   }
 
 
@@ -114,7 +124,7 @@ class LoadMoreNewsScreen extends Component {
         ListFooterComponent={this.renderLoading}
         refreshing={fetching && this.page === 1 ? true : false}
         onRefresh={this.onRefresh}
-        onEndReached={this.onLoadMore}
+        onEndReached={_.debounce(this.onLoadMore, 5000)}
       />
     )
   }
