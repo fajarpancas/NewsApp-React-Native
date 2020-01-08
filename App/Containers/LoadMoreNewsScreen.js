@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 // import YourActions from '../Redux/YourRedux'
 import TodayData from '../Redux/TodayRedux'
 import { Images } from '../Themes'
+import _ from 'lodash'
 
 // Styles
 import styles from './Styles/TodayScreenStyle'
@@ -19,22 +20,18 @@ class LoadMoreNewsScreen extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {
-      isRefreshing: false,
-      page: 2,
-      fecth: false
-    }
+    this.renderItem = this.renderItem.bind(this)
     this.fetchFunction = this.fetchFunction.bind(this)
     this.onRefresh = this.onRefresh.bind(this)
-    this.onLoadMore = this.onLoadMore.bind(this)
+    this.onLoadMore = _.debounce(this.onLoadMore.bind(this), 5000)
   }
 
   componentDidMount() {
-    this.fetchFunction(1, true)
+    this.onRefresh()
   }
 
   fetchFunction(page, reset) {
-    const data={
+    const data = {
       page: page,
       reset: reset
     }
@@ -42,28 +39,19 @@ class LoadMoreNewsScreen extends Component {
   }
 
   onRefresh() {
-    this.setState({page: 2})
-    this.fetchFunction(this.page, true)
+    this.page = 1
+    this.fetchFunction(this.page)
   }
 
   onLoadMore() {
-    this.setState({page: this.state.page + 1})
-    this.fetchFunction(this.state.page, false)
-  }
-
-  _onRefresh = () => {
-    this.setState({ isRefreshing: true })
-    setTimeout(() => {
-      this.setState({page: 2})  
-      this.componentDidMount()
-      this.setState({ isRefreshing: false })
-    }, 1000);
+    this.page = this.page + 1
+    this.fetchFunction(this.page, false)
   }
 
 
-  renderItem = ({ item }) => {
+  renderItem({ item }) {
     return (
-      <TouchableOpacity onPress={() => this.detail(item)}>
+      <TouchableOpacity disabled onPress={() => this.detail(item)}>
         <View style={styles.container}>
           <View style={styles.boxTitleTopNews}>
             {item.title && item.title.length > 55 ?
@@ -93,17 +81,18 @@ class LoadMoreNewsScreen extends Component {
     )
   }
 
-  _renderRefreshControl() {
-    return (
-      <RefreshControl
-        refreshing={this.state.isRefreshing}
-        onRefresh={this._onRefresh}
-      />
-    );
-  };
-
   renderLoading = () => {
-    if (this.props.getListStatus.fetching) {
+    const { list, getListStatus } = this.props
+    const { fetching, payload, error } = getListStatus
+
+    if (!fetching && payload) {
+      const { totalResults } = payload
+      if (list.length >= totalResults) {
+        return <Text>No More Data</Text>
+      }
+    }
+
+    if (error !== true) {
       return <ActivityIndicator />
     }
     return null
@@ -112,46 +101,27 @@ class LoadMoreNewsScreen extends Component {
   render() {
     const { list, getListStatus } = this.props
     const { fetching } = getListStatus
-
-
-    // if(fetching === true){
-    //   return (
-    //     <ActivityIndicator size="large" style={{ marginTop: 20 }}></ActivityIndicator>
-    //   )
-    // }
-    if (list && fetching === false) {
-      return (
-        <FlatList
-          data={list}
-          renderItem={this.renderItem.bind(this)}
-          ListEmptyComponent={() => {
-            return (
-              <View><Text>Empty Data</Text></View>
-            )
-          }}
-          refreshControl={this._renderRefreshControl()}
-          keyExtractor={item => item.author}
-          ListFooterComponent={this.renderLoading}
-              // onRefresh={this.onRefresh}
-          onEndReachedThreshold={1}
-          onEndReached={(distance)=>{
-            console.log(distance)
-            if(distance.distanceFromEnd > 0){
-              this.onLoadMore()
-            }
-            }}
-        />
-      )
-    }
     return (
-      <View></View>
+      <FlatList
+        data={list}
+        renderItem={this.renderItem}
+        ListEmptyComponent={() => {
+          return (
+            <View><Text>Empty Data</Text></View>
+          )
+        }}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={this.renderLoading}
+        refreshing={fetching && this.page === 1 ? true : false}
+        onRefresh={this.onRefresh}
+        onEndReached={this.onLoadMore}
+      />
     )
   }
-
 }
 
+
 const mapStateToProps = (state) => {
-  // alert(JSON.stringify(state.news.getList))
   return {
     list: state.news.list,
     getListStatus: state.news.getList

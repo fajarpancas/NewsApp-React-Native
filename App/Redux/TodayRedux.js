@@ -1,5 +1,6 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
+import { mergeAndReplace } from '../Lib/Helper'
 // import mergeAndReplace from '../Transforms/Array'
 
 /* ------------- Types and Action Creators ------------- */
@@ -126,26 +127,22 @@ export const getVideoFailure = (state) =>
   state.merge({ ...state, getVideo: { fetching: false, error: true, payload: undefined } })
 
 export const getListRequest = (state, { data }) => {
-  console.tron.log('reset : ', data.reset)
-  if(data.reset === true){
-    return state.merge({ ...state, getList: { fetching: true, data, error: undefined }, list: [] })
-    // state.list = []
-  }else{
-    return state.merge({ ...state, getList: { fetching: true, data, error: undefined } })
-  }
+  return state.merge({ ...state, getList: { ...state.getList, fetching: true, data, error: undefined } })
 }
 
 export const getListSuccess = (state, { payload }) => {
-  // alert(JSON.stringify(payload.articles))
+  const { data } = state.getList
   let newList = [...state.list]
-  let temp = newList.concat(payload.articles)
-  // newList = mergeAndReplace(newList, payload.articles)
-  console.tron.log(JSON.stringify(`length data :  ${temp.length}`))
-  return state.merge({ ...state, getList: { fetching: false, error: undefined, payload }, list: temp })
+  if (data.page === 1) {
+    newList = payload.articles
+  } else {
+    newList = mergeAndReplace(newList, payload.articles, 'url', 'publishedAt', 'desc', true)
+  }
+  return state.merge({ ...state, getList: { ...state.getList, fetching: false, error: undefined, payload }, list: newList })
 }
 
 export const getListFailure = (state) => {
-  return state.merge({ ...state, getList: { ...state.gerList, fetching: false, error: true, payload: undefined } })
+  return state.merge({ ...state, getList: { ...state.gerList, fetching: false, error: true } })
 }
 
 export const setHeader = (state, { payload }) => {

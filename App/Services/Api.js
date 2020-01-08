@@ -14,7 +14,8 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
     baseURL,
     // here are some default headers
     headers: {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
+      'X-Api-Key': '9d2304e84ed9499c93a346387808a50d',
     },
     // 10 second timeout...
     timeout: 25000
@@ -37,11 +38,11 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
   const getUser = (username) => api.get('search/users', {q: username})
-  const getToday = () => api.get('top-headlines?sources=techcrunch&apiKey=e457e5324b9449d4b60702270195720e')
-  const getList = (params) => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e', params)
-  const getBusinessToday = () => api.get('top-headlines?country=us&category=business&apiKey=e457e5324b9449d4b60702270195720e')
-  const getTechToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
-  const getVideoToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
+  const getToday = () => api.get('top-headlines?sources=techcrunch')
+  const getList = (params) => api.get('everything?domains=wsj.com', params)
+  const getBusinessToday = () => api.get('top-headlines?country=us&category=business')
+  const getTechToday = () => api.get('everything?domains=wsj.com')
+  const getVideoToday = () => api.get('everything?domains=wsj.com')
 
   // ------
   // STEP 3
