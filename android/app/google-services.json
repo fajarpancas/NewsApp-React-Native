@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:596379566025:android:b39d39391bf30554057218",
         "android_client_info": {
-          "package_name": "com.vsnews"
+          "package_name": "com.vsignite"
         }
       },
       "oauth_client": [],
@@ -37,12 +37,36 @@
           "package_name": "com.vsnews"
         }
       },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCoC7d6Y-GheVuZnS9Xw-8zQqeIT18T5Gs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "596379566025-90ftqrfdmrmq65rojd0dfg4ds9esahn5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:596379566025:android:4e7f567d85a0899a057218",
+        "android_client_info": {
+          "package_name": "com.vsnewsapp"
+        }
+      },
       "oauth_client": [
         {
-          "client_id": "596379566025-mgbr1dn2mvv1to6j7bdda0q9nf3ccb55.apps.googleusercontent.com",
+          "client_id": "596379566025-i236lvh8ubh1ssknim83htaq725tkf7l.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.vsnews",
+            "package_name": "com.vsnewsapp",
             "certificate_hash": "eb999488ff398bd94eefc34437d78d1a8d5c0726"
           }
         }

@@ -92,8 +92,6 @@ export const getBusinessRequest = (state, { data }) =>
 
 // successful api lookup
 export const getBusinessSuccess = (state, { payload }) => {
-  // const { data } = action
-  // const { articles } = payload
   const { data } = state.getBusiness
   let newList = [...state.businessList]
   if (data.page === 1) {
@@ -130,8 +128,6 @@ export const getVideoRequest = (state, { data }) =>
 
 // successful api lookup
 export const getVideoSuccess = (state, { payload }) => {
-  // const { data } = action
-  // const { articles } = payload
   const { data } = state.getVideo
   let newList = [...state.videoList]
   if (data.page === 1) {
