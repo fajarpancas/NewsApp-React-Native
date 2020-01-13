@@ -1,4 +1,4 @@
-package com.vsnews;
+package com.vsnews.app;
 
 import android.app.Application;
 
