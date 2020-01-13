@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "596379566025-cg60ns50pifomq2ctdptti737s7neiml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vsnews.app",
+            "certificate_hash": "c1ec7dd67a6a4df5be6c5f13fb3f97ecc999d3aa"
+          }
+        },
+        {
           "client_id": "596379566025-q3nhpe1g3dh86ksjlqhjqu2olbs5k0p5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,7 +46,7 @@
           ]
         }
       }
-    },
+    }
   ],
   "configuration_version": "1"
 }
