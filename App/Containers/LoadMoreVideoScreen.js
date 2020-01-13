@@ -13,10 +13,10 @@ import Fonts from '../Themes/Fonts'
 // Styles
 import styles from './Styles/TodayScreenStyle'
 
-class LoadMoreNewsScreen extends Component {
+class LoadMoreVideoScreen extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
-    getTopNews: PropTypes.func,
+    getTech: PropTypes.func,
     setHeader: PropTypes.func
   }
 
@@ -31,7 +31,7 @@ class LoadMoreNewsScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerRight: () => <Text></Text>,
     headerTitle: () => <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontFamily: Fonts.type.SPFBold, fontSize: Fonts.size.input }}>
-      Top News</Text>,
+      Video</Text>,
   })
   
   componentDidMount() {
@@ -43,7 +43,7 @@ class LoadMoreNewsScreen extends Component {
       page: page,
       reset: reset,
     }
-    this.props.getTopNews(data)
+    this.props.getTech(data)
   }
 
   onRefresh() {
@@ -57,7 +57,23 @@ class LoadMoreNewsScreen extends Component {
   }
 
   onPressDetail = (item) => {
-    this.props.setHeader(item)
+    const detail = {
+      source: {
+        id: item.id,
+        name: item.name
+      },
+      author: item.author,
+      title: item.title,
+      description: item.description,
+      url: item.url,
+      urlToImage: item.urlToImage,
+      publishedAt: item.publishedAt,
+      content: item.content,
+      newsType: 'Video',
+      viewCount: item.viewCount,
+      shareCount: item.shareCount
+    }
+    this.props.setHeader(detail)
   }
 
   renderItem({ item }) {
@@ -93,12 +109,12 @@ class LoadMoreNewsScreen extends Component {
   }
 
   renderLoading = () => {
-    const { getTopNewsData, topList } = this.props
-    const { fetching, payload, error } = getTopNewsData
+    const { getTechData, techList } = this.props
+    const { fetching, payload, error } = getTechData
 
     if (!fetching && payload) {
       const { totalResults } = payload
-      if (topList.length >= totalResults) {
+      if (techList.length >= totalResults) {
         return <Text>No More Data</Text>
       }
     }
@@ -110,13 +126,13 @@ class LoadMoreNewsScreen extends Component {
   }
 
   render() {
-    const { getTopNewsData, topList } = this.props
-    const { fetching } = getTopNewsData
+    const { getTechData, techList } = this.props
+    const { fetching } = getTechData
 
     return (
       <View style={{ marginTop: 15 }}>
         <FlatList
-          data={topList}
+          data={techList}
           renderItem={this.renderItem}
           ListEmptyComponent={() => {
             return (
@@ -137,16 +153,16 @@ class LoadMoreNewsScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    getTopNewsData: state.news.getTopNews,
-    topList: state.news.newsTopList
+    getTechData: state.news.getVideo,
+    techList: state.news.videoList
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setHeader: data => dispatch(TodayData.setHeader(data)),
-    getTopNews: data => dispatch(TodayData.getTopRequest(data)),
+    getTech: data => dispatch(TodayData.getVideoRequest(data)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadMoreNewsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LoadMoreVideoScreen)

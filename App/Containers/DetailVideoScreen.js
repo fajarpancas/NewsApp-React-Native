@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import Fonts from '../Themes/Fonts'
 import PropTypes from 'prop-types'
 
-class DetailScreen extends Component {
+class DetailVideoScreen extends Component {
   static propTypes = {
     getTech: PropTypes.func,
     setHeader: PropTypes.func
@@ -25,7 +25,7 @@ class DetailScreen extends Component {
       fetching: false
     }
   }
-  
+
   static navigationOptions = ({ navigation }) => ({
     headerRight: () => <Text></Text>,
     headerTitle: () => <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontFamily: Fonts.type.SPFBold, fontSize: Fonts.size.input }}>
@@ -105,14 +105,15 @@ class DetailScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getTech()
+    const data = {
+      page: 1
+    }
+    this.props.getTech(data)
     // alert(JSON.stringify(this.props.header))
   }
 
   seeAll = () => {
-    this.setState({
-      seeAll: !this.state.seeAll
-    })
+    this.props.navigation.navigate('LoadMoreTechScreen')
   }
 
   detail = (item) => {
@@ -165,7 +166,8 @@ class DetailScreen extends Component {
 
     return (
       <ScrollView>
-        <Text style={styles.titleDetail}>{detail.title}</Text>
+        <Text style={styles.titleDetail}>Video Screen</Text>
+        <Image source={{ uri: detail.urlToImage }} style={styles.detailImage} />
         <View style={styles.container2}>
           <View style={styles.uploaded}>
             <Text style={styles.timeText}>{Moment(detail.publishedAt).format('MMMM DD, YYYY')}</Text>
@@ -198,9 +200,6 @@ class DetailScreen extends Component {
 
         {/* content */}
 
-        <Text style={styles.contentDetailAuthor}>{detail.author} -
-        <Text style={styles.contentDetail}> {detail.content}</Text></Text>
-        <Image source={{ uri: detail.urlToImage }} style={styles.detailImage} />
 
         <View style={styles.wrapper}>
           <View style={styles.containerHead}>
@@ -244,9 +243,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getTech: () => dispatch(TodayData.getTechnoRequest()),
+    getTech: data => dispatch(TodayData.getVideoRequest(data)),
     setHeader: data => dispatch(TodayData.setHeader(data))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(DetailVideoScreen)

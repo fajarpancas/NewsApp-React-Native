@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.vsignite">
+  package="com.vsnews">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -21,10 +21,10 @@
       </service>
       <!-- <meta-data
     android:name="com.google.firebase.messaging.default_notification_color"
-    android:resource="@color/colorAccent" />
-     <meta-data -->
+    android:resource="@color/colorAccent" /> -->
+     <!-- <meta-data
     android:name="com.google.firebase.messaging.default_notification_icon"
-    android:resource="@drawable/ic_stat_ic_notification" />
+    android:resource="@drawable/ic_stat_ic_notification" /> -->
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

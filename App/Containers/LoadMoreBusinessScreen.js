@@ -13,10 +13,10 @@ import Fonts from '../Themes/Fonts'
 // Styles
 import styles from './Styles/TodayScreenStyle'
 
-class LoadMoreNewsScreen extends Component {
+class LoadMoreBusinessScreen extends Component {
   static propTypes = {
     dispatch: PropTypes.func,
-    getTopNews: PropTypes.func,
+    getBusiness: PropTypes.func,
     setHeader: PropTypes.func
   }
 
@@ -31,7 +31,7 @@ class LoadMoreNewsScreen extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerRight: () => <Text></Text>,
     headerTitle: () => <Text style={{ marginLeft: 'auto', marginRight: 'auto', fontFamily: Fonts.type.SPFBold, fontSize: Fonts.size.input }}>
-      Top News</Text>,
+      Business</Text>,
   })
   
   componentDidMount() {
@@ -43,7 +43,7 @@ class LoadMoreNewsScreen extends Component {
       page: page,
       reset: reset,
     }
-    this.props.getTopNews(data)
+    this.props.getBusiness(data)
   }
 
   onRefresh() {
@@ -93,12 +93,12 @@ class LoadMoreNewsScreen extends Component {
   }
 
   renderLoading = () => {
-    const { getTopNewsData, topList } = this.props
-    const { fetching, payload, error } = getTopNewsData
+    const { getBusinessData, businessList } = this.props
+    const { fetching, payload, error } = getBusinessData
 
     if (!fetching && payload) {
       const { totalResults } = payload
-      if (topList.length >= totalResults) {
+      if (businessList.length >= totalResults) {
         return <Text>No More Data</Text>
       }
     }
@@ -110,13 +110,13 @@ class LoadMoreNewsScreen extends Component {
   }
 
   render() {
-    const { getTopNewsData, topList } = this.props
-    const { fetching } = getTopNewsData
+    const { getBusinessData, businessList } = this.props
+    const { fetching } = getBusinessData
 
     return (
       <View style={{ marginTop: 15 }}>
         <FlatList
-          data={topList}
+          data={businessList}
           renderItem={this.renderItem}
           ListEmptyComponent={() => {
             return (
@@ -137,16 +137,16 @@ class LoadMoreNewsScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    getTopNewsData: state.news.getTopNews,
-    topList: state.news.newsTopList
+    getBusinessData: state.news.getBusiness,
+    businessList: state.news.businessList
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     setHeader: data => dispatch(TodayData.setHeader(data)),
-    getTopNews: data => dispatch(TodayData.getTopRequest(data)),
+    getBusiness: data => dispatch(TodayData.getBusinessRequest(data)),
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoadMoreNewsScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(LoadMoreBusinessScreen)

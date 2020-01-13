@@ -68,7 +68,7 @@ class LoginScreen extends Component {
 
     GoogleSignin.configure({
       scopes: ["https://www.googleapis.com/auth/drive.readonly"], // what API you want to access on behalf of the user, default is email and profile
-      webClientId: '901376282040-f4f9hilrvn095iptekdivn6em1bla7eh.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
+      webClientId: '837208842645-snii5obfp52ohh1ae9glsl2n4ls548nk.apps.googleusercontent.com', // client ID of type WEB for your server (needed to verify user ID and offline access)
       // offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
       // hostedDomain: '', // specifies a hosted domain restriction
       // loginHint: '', // [iOS] The user's ID, or email address, to be prefilled in the authentication UI if possible. [See docs here](https://developers.google.com/identity/sign-in/ios/api/interface_g_i_d_sign_in.html#a0a68c7504c31ab0b728432565f6e33fd)
@@ -167,12 +167,12 @@ class LoginScreen extends Component {
     } catch (error) {
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
-        alert('a')
+        // alert('a')
       } else if (error.code === statusCodes.IN_PROGRESS) {
         // operation (e.g. sign in) is in progress already
-        alert('b')
+        // alert('b')
       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        alert('c')
+        // alert('c')
         // play services not available or outdated
       } else {
         alert(error)

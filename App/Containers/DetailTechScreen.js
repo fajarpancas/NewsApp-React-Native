@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 import Fonts from '../Themes/Fonts'
 import PropTypes from 'prop-types'
 
-class DetailScreen extends Component {
+class DetailTechScreen extends Component {
   static propTypes = {
     getTech: PropTypes.func,
     setHeader: PropTypes.func
@@ -105,14 +105,15 @@ class DetailScreen extends Component {
   }
 
   componentDidMount() {
-    this.props.getTech()
+    const data = {
+      page: 1
+    }
+    this.props.getTech(data)
     // alert(JSON.stringify(this.props.header))
   }
 
   seeAll = () => {
-    this.setState({
-      seeAll: !this.state.seeAll
-    })
+    this.props.navigation.navigate('LoadMoreTechScreen')
   }
 
   detail = (item) => {
@@ -244,9 +245,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getTech: () => dispatch(TodayData.getTechnoRequest()),
+    getTech: data => dispatch(TodayData.getVideoRequest(data)),
     setHeader: data => dispatch(TodayData.setHeader(data))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DetailScreen)
+export default connect(mapStateToProps, mapDispatchToProps)(DetailTechScreen)

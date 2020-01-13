@@ -12,6 +12,9 @@ import TrendingScreen from '../Containers/TrendingScreen'
 import TodayScreen from '../Containers/TodayScreen'
 import BerandaScreen from '../Containers/BerandaScreen'
 import LoadMoreNewsScreen from '../Containers/LoadMoreNewsScreen'
+import LoadMoreBusinessScreen from '../Containers/LoadMoreBusinessScreen'
+import LoadMoreTechScreen from '../Containers/LoadMoreTechScreen'
+import LoadMoreVideoScreen from '../Containers/LoadMoreVideoScreen'
 
 import LoginScreen from '../Containers/LoginScreen'
 import { createStackNavigator } from 'react-navigation-stack';
@@ -70,6 +73,15 @@ const MainStack = createStackNavigator(
     },
     LoadMoreNewsScreen: {
       screen: LoadMoreNewsScreen,
+    },
+    LoadMoreBusinessScreen: {
+      screen: LoadMoreBusinessScreen,
+    },
+    LoadMoreTechScreen: {
+      screen: LoadMoreTechScreen,
+    },
+    LoadMoreVideoScreen: {
+      screen: LoadMoreVideoScreen,
     },
     DetailTopScreen: {
       screen: DetailTopScreen,

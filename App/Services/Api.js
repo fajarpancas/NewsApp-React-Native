@@ -1,5 +1,6 @@
 // a library to wrap and simplify api calls
 import apisauce from 'apisauce'
+import { Alert } from 'react-native'
 
 // our "constructor"
 const create = (baseURL = 'https://newsapi.org/v2/') => {
@@ -14,10 +15,32 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
     baseURL,
     // here are some default headers
     headers: {
-      'Cache-Control': 'no-cache'
+      'Cache-Control': 'no-cache',
+      'X-Api-Key': '4fb5d5505596460fba24aa2de7c560ec',
     },
     // 10 second timeout...
     timeout: 25000
+  })
+
+  let showErrorAler = false
+
+  api.addMonitor(response => {
+    const { status, config, data } = response
+    if (status.toString().charAt(0) !== '2') {
+      const { message } = data
+      if (!showErrorAler) {
+        showErrorAler = true
+
+        Alert.alert(
+          'Error',
+          message,
+          [
+            { text: 'OK', onPress: () => { showErrorAler = false } },
+          ],
+          { cancelable: false }
+        )
+      }
+    }
   })
 
   // ------
@@ -36,12 +59,11 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   //
   const getRoot = () => api.get('')
   const getRate = () => api.get('rate_limit')
-  const getUser = (username) => api.get('search/users', {q: username})
-  const getToday = () => api.get('top-headlines?sources=techcrunch&apiKey=e457e5324b9449d4b60702270195720e')
-  const getList = (params) => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e', params)
-  const getBusinessToday = () => api.get('top-headlines?country=us&category=business&apiKey=e457e5324b9449d4b60702270195720e')
-  const getTechToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
-  const getVideoToday = () => api.get('everything?domains=wsj.com&apiKey=e457e5324b9449d4b60702270195720e')
+  const getUser = (username) => api.get('search/users', { q: username })
+  const getListBusiness = (params) => api.get('top-headlines?sources=techcrunch', params)
+  const getList = (params) => api.get('top-headlines?country=us&category=business', params)
+  const getListVideo = (params) => api.get('everything?domains=wsj.com', params)
+  const getListTech = (params) => api.get('everything?domains=wsj.com', params)
 
   // ------
   // STEP 3
@@ -57,14 +79,10 @@ const create = (baseURL = 'https://newsapi.org/v2/') => {
   //
   return {
     // a list of the API functions from step 2
-    getRoot,
-    getRate,
-    getUser,
-    getToday,
     getList,
-    getBusinessToday,
-    getTechToday,
-    getVideoToday
+    getListBusiness,
+    getListTech,
+    getListVideo
   }
 }
 
