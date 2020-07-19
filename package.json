@@ -33,7 +33,7 @@
     "format-json": "1.0.3",
     "identity-obj-proxy": "3.0.0",
     "jetifier": "^1.6.5",
-    "lodash": "4.17.15",
+    "lodash": "4.17.19",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
     "prop-types": "15.7.2",
